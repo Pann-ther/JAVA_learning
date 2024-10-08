@@ -1,7 +1,5 @@
 public class Age {
 
-
-    
     static String nom; // Declaration de la variable nom
     static final int AGE_MINIMUM = 18; // Declaration et initialisation de la constante age minimum
 
@@ -13,7 +11,7 @@ public class Age {
 
     public static void main(String[] args) {
 
-        // Recuperation du nom de l'utilisateur et initialisation de la variable 
+        // Recuperation du nom de l'utilisateur et initialisation de la variable
         Terminal1.ecrireStringln("Veuillez entrer votre nom : ");
         nom = Terminal1.lireString();
 
