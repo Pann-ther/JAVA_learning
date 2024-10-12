@@ -1,10 +1,10 @@
-import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.Scanner;
 
 public class ListeCourse {
 
     static Scanner scanner = new Scanner(System.in); // Creation de l'objet scanner
-    static ArrayList<String> liste = new ArrayList<>(); // Creation de la liste
+    static HashSet<String> liste = new HashSet<>(); // Creation de la liste
 
     // Methode pour ajouter des elements a la liste
     public static void ajoutListe() {
