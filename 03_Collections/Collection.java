@@ -2,6 +2,8 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.HashMap;
 import java.util.Scanner;
+import java.util.Map;
+import java.util.Set;
 
 public class Collection {
 
@@ -20,9 +22,9 @@ public class Collection {
     }
     
     // Methode pour afficher l'element ajouté
-    public static void affichageAjout(String element){
+    public static void affichageAjout(String sujet, String element){
             System.out.println();
-            System.out.println("La ville " + element + " à été ajouté");
+            System.out.println(sujet +" "+element + " à été ajouté");
     }
 
     // Methode pour savoir si l'utilisateur a d'autres elements à entrer
@@ -34,6 +36,7 @@ public class Collection {
 
     // Methode pour condition de la boucle while
         public static boolean conditionWhile(String reponse){
+          
             return !reponse.equalsIgnoreCase("N");
         }
 
@@ -50,14 +53,20 @@ public class Collection {
             System.out.println("Veuillez entrer le nom de l'etudiant: ");
             String nom = verificationSaisie();// Declaration et initialisation avec l'element ajouté par l'utilisateur
 
-            // boucle while pour gerer les erreurs de saisie
+            // Boucle while pour gerer les erreurs de saisie
             while(nom.isEmpty()){
                 System.out.println("Aucun nom à été entrer, veuillez entrer le nom de l'etudiant: ");
                 nom = verificationSaisie();// Réinitialisation avec l'element ajouté par l'utilisateur
             }
 
-            nomsEtudiants.add(nom);
-            affichageAjout(nom);
+            // Boucle if pour vérifier si l'etudiant n'est pas déja existant dans la liste
+            if(nomsEtudiants.contains(nom)){
+                System.out.print("L'etudiant existe deja dans la liste");
+            }else{
+                nomsEtudiants.add(nom);
+                affichageAjout("L'etudiant",nom);
+            }
+            
             reponse = questionWhile("noms");
 
         } while(conditionWhile(reponse));
@@ -86,12 +95,12 @@ public class Collection {
                 ville = verificationSaisie();
             }
 
+            // Boucle if-else pour verifier si l'element ajouté dans la liste existe déja
             if(listeVilles.contains(ville)){
                 System.out.println("Cette ville existe deja dans la liste");
             }else{
                 listeVilles.add(ville);
-                affichageAjout(ville);
-                
+                affichageAjout("La ville",ville);
             }
 
             reponse = questionWhile("villes");
@@ -110,31 +119,67 @@ public class Collection {
     public static void hashMap(){
         String reponse;
 
+        // Boucle do-while pour demander a l'utilisateur après chaque saisie s'il souhaite en effectuer d'autres
         do {
-            System.out.println("Veuillez entrer le nom du contact");
-            String nom = verificationSaisie()
+            System.out.println("Veuillez entrer le nom du contact: ");
+            String nom = verificationSaisie();
 
+            // Boucle while pour gerer les erreurs de saisie
             while (nom.isEmpty()) {
-                System.out.println("Aucun élement a été détecté,veuillez entrer le nom du contact");
-                nom = verificationSaisie()
+                System.out.println("Aucun élement a été détecté,veuillez entrer le nom du contact: ");
+                nom = verificationSaisie();
             }
 
-            annuaire.put
+            System.out.println("Veuillez entrer le numero du contact: ");
+            String numero = verificationSaisie();
 
-            System.out.println("Veuillez entrer le numero du contact");
-            String numero = verificationSaisie()
-
+            // Boucle while pour gerer les erreurs de saisie
             while (numero.isEmpty()) {
-                System.out.println("Aucun élement a été détecté,veuillez entrer le numero du contact");
-                numero = verificationSaisie()
+                System.out.println("Aucun élement a été détecté,veuillez entrer le numero du contact: ");
+                numero = verificationSaisie();
             }
+
+            while(numero.length() != 10){
+                System.out.println("Veuillez entrer un numero du valide: ");
+                numero = verificationSaisie();
+            }
+
+            // Boucle else-if pour vérifier si le contact n'a pas déja été crée avec les infos entrées
+            if(annuaire.containsKey(nom)){
+                System.out.println("Cette personne existe déja dans l'annuaire");
+            } else if(annuaire.containsValue(numero)){
+                System.out.println("Ce numéro existe deja dans l'annuaire");
+            } else{
+                annuaire.put(nom, numero);
+            affichageAjout("Le contact",nom);
+            }
+
+            do{
+                reponse = questionWhile("contacts");
+                if (!reponse.equalsIgnoreCase("O") && !reponse.equalsIgnoreCase("N")) {
+                    System.out.println();
+                    System.out.println("Reponse invalide, entrer O ou N");
+                }
+            } while (!reponse.equalsIgnoreCase("O") && !reponse.equalsIgnoreCase("N"));
+
+        }while (conditionWhile(reponse));
+
+        // Affichage de l'annuaire
+        System.out.println();
+        System.out.println("Voici l'annuaire");
+        System.out.println();
+        for(Map.Entry <String, String> entry : annuaire.entrySet()){
+            System.out.println("Nom: "+ entry.getKey() + ", Numéro: "+ entry.getValue());
+            System.out.println();
         }
+
     }
    
 
     public static void main(String[] args) {
         //arrayList();
-        hashSet();
+        //hashSet();
+        hashMap();
         scanner.close();
     }
 
