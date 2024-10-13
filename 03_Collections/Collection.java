@@ -18,7 +18,7 @@ public class Collection {
 
     // Methode pour verifier si un élément a bien été saisi par l'utilisateur
     public static String verificationSaisie() {
-        return scanner.nextLine().trim();
+        return scanner.nextLine().trim().toUpperCase();
     }
     
     // Methode pour afficher l'element ajouté
@@ -67,7 +67,15 @@ public class Collection {
                 affichageAjout("L'etudiant",nom);
             }
             
-            reponse = questionWhile("noms");
+            // Boucle do-while pour verifier si la reponse est conforme à celle attendu
+            do{
+                reponse = questionWhile("noms");  
+                if (!reponse.equalsIgnoreCase("N") && !reponse.equalsIgnoreCase("O")) {
+                    System.out.println();
+                    System.out.println("Reponse invalide, entrer O ou N");
+                }
+            } while(!reponse.equalsIgnoreCase("N") && !reponse.equalsIgnoreCase("O"));
+            
 
         } while(conditionWhile(reponse));
 
@@ -76,6 +84,7 @@ public class Collection {
         for(String etudiant : nomsEtudiants){
             System.out.println(etudiant);
         }
+        System.out.println();
     }
 
     
@@ -103,7 +112,15 @@ public class Collection {
                 affichageAjout("La ville",ville);
             }
 
-            reponse = questionWhile("villes");
+            // Boucle do-while pour verifier si la reponse est conforme à celle attendu
+            do{
+                reponse = questionWhile("villes");  
+                if (!reponse.equalsIgnoreCase("N") && !reponse.equalsIgnoreCase("O")) {
+                    System.out.println();
+                    System.out.println("Reponse invalide, entrer O ou N");
+                }
+            } while(!reponse.equalsIgnoreCase("N") && !reponse.equalsIgnoreCase("O"));
+            
 
         }while(conditionWhile(reponse));
         
@@ -113,6 +130,7 @@ public class Collection {
         for(String ville : listeVilles){
             System.out.println(ville);
         }
+        System.out.println();
     }
 
     // Methode pour crée un annuaire et rechercher le numéro à partir du nom
@@ -154,6 +172,7 @@ public class Collection {
             affichageAjout("Le contact",nom);
             }
 
+            // Boucle do-while pour verifier si la reponse est conforme à celle attendu
             do{
                 reponse = questionWhile("contacts");
                 if (!reponse.equalsIgnoreCase("O") && !reponse.equalsIgnoreCase("N")) {
@@ -172,6 +191,7 @@ public class Collection {
             System.out.println("Nom: "+ entry.getKey() + ", Numéro: "+ entry.getValue());
             System.out.println();
         }
+        System.out.println();
 
     }
    
