@@ -36,7 +36,6 @@ public class Collection {
 
     // Methode pour condition de la boucle while
         public static boolean conditionWhile(String reponse){
-          
             return !reponse.equalsIgnoreCase("N");
         }
 
@@ -191,8 +190,8 @@ public class Collection {
             System.out.println("Nom: "+ entry.getKey() + ", Numéro: "+ entry.getValue());
             System.out.println();
         }
+        
         System.out.println();
-
     }
    
 
