@@ -19,7 +19,7 @@ public class Livre {
     public void afficherDetails(){
         System.out.println("Titre: " + titre);
         System.out.println("Auteur: " + auteur);
-        System.out.println("Prix: " + prix);
+        System.out.println("Prix: " + prix + " €");
         System.out.println();
     }
 }
