@@ -14,6 +14,7 @@ public class Main {
         // Creation d'un tableau de type vehicule
         Vehicule[] parking = new Vehicule[6];
 
+        // Initialisation du tableau avec les objets de types Vehicule
         parking[0]= clio;
         parking[1]= audi;
         parking[2]= porsche;
@@ -21,6 +22,7 @@ public class Main {
         parking[4]= cb650r;
         parking[5]= panigale;
         
+        // Boucle for each pour afficher la vitesse de chaque vehicule du parking
         for(Vehicule vehicule : parking){
             vehicule.afficherVitesse();
         }
