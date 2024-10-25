@@ -7,7 +7,7 @@ public class TableauEntier {
         Scanner scanner = new Scanner(System.in);
 
         // Creation et initialisation du tableau de nombre entier
-        int[] tab = { 12, 15, 13, 10, 8, 9, 13, 14 };
+        int[] tab = { 12, 15, 13, 10, 8, 8, 13, 14 };
 
         // recuperation du nombre utilisateur et stockage avec une boucle do-while pour s'assurer d'avoir un entier entre 5 et 15
         int input;
@@ -20,19 +20,21 @@ public class TableauEntier {
 
         // Verification de la presence de input dans le tableau
         System.out.println(input + " fait t'il parti du tableau?");
-        String reponse = "non";
+        boolean presence = false;
+        int indice = -1;
+
         for (int i = 0; i < tab.length; i++) {
             if (tab[i] == input) {
-                reponse = "oui";
+                presence = true;
+                indice = i;
                 break;
             }
         }
 
         // Reponse a l'utilisateur
-        if (reponse.equalsIgnoreCase("oui")) {
-            System.out.println("oui");
-
-        } else {
+        if (presence) {
+            System.out.println("Oui a l'indice "+ indice);
+        }else{
             System.out.println("Non");
         }
 
