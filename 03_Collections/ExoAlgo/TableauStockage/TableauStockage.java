@@ -21,7 +21,7 @@ public class TableauStockage{
 		}
 
         // Calcul de la moyenne des entiers du tableau
-		double moyenne = (double)sommeEntier / nbEntier;
+		double moyenne = (double) sommeEntier / nbEntier;
 
 		System.out.println("\nVoici le contenu du tableau");		
 		for(int i=0; i<tab.length; i++){

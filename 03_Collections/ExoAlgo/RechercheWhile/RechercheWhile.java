@@ -15,6 +15,7 @@ public class RechercheWhile {
         System.out.print("Entrez un nombre entier: ");
         element = scanner.nextInt();
 
+        // boucle while pour changer la condition si l'element est trouvé dans le tableau
         int i = 0;
         while (i < tab.length && !appartient) {
             if (tab[i] == element) {
