@@ -27,10 +27,10 @@ public class DateAnniv {
 			System.out.println("Entrez un entier: ");
 			if (scanner.hasNextInt()) {
 				input = scanner.nextInt();
-				scanner.nextLine();
 				break;
 			} else {
 				System.out.println("Vous avez entrer autre chose qu'un entier");
+				scanner.next();
 			}
 		} while (true);
 
