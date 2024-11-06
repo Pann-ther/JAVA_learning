@@ -3,7 +3,7 @@ public class Calcul{
 	static Scanner scanner = new Scanner(System.in);
 
 	// Methode pour stocker les 3 entiers saisis au clavier
-	static public void saisieEntier(int[] tab){
+	public static void saisieEntier(int[] tab){
 		for(int i = 0; i < tab.length; i++){
 			do{
 				System.out.print("Entrez un entier: ");
@@ -19,7 +19,7 @@ public class Calcul{
 	}
 
 	// Methode pour calculer le nombre le plus grand des 3 entiers
-	static public void calculerPlusGrand(int[] tab){
+	public static void calculerPlusGrand(int[] tab){
         int plusGrand = tab[0];
 		for(int i=1; i<tab.length; i++){
 			if(tab[i]>plusGrand){
@@ -30,7 +30,7 @@ public class Calcul{
 	}
 
 	// Methode pour calculer la moyenne des 3 nombres
-	static public void calculerMoyenne(int[] tab){
+	public static void calculerMoyenne(int[] tab){
         double moyenne = 0;
 		for(int i=0; i<tab.length; i++){
 			moyenne += tab[i];
