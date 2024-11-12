@@ -1,9 +1,12 @@
 public class Main {
     public static void main(String[] args) {
-        Personne personne1 = new Personne("Kylian",22);
-        System.out.println(personne1.getNom()+" "+personne1.getAge()+" ans");
-        personne1.setNom("Charles");
-        System.out.println(personne1.getNom()+" "+personne1.getAge()+" ans");
+       //CompteBancaire client1 = new CompteBancaire("Kylian Chebbah");
+       //System.out.println(client1.toString());
+
+       CompteBancaire client2 = new CompteBancaire("Ursula Chebbah");
+       client2.deposer(1000);
+       client2.retirer(500);
+       System.out.println(client2.toString());
 
     }
 }
