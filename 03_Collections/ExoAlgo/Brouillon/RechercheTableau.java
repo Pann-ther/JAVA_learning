@@ -3,6 +3,7 @@ import java.util.Scanner;
 public class RechercheTableau {
     static Scanner scanner = new Scanner(System.in);
 
+    // Capture l'entrée Utilisateur
 	public static char capturerInputChar(String message){
         char input;
 		System.out.print("Entrez "+message+" : ");
@@ -11,12 +12,14 @@ public class RechercheTableau {
 		return input;
 	}
 
+    // Convertit tous les caractères du tableau en minuscules
     public static void tableauMinuscule(char[] tab){
         for(int i=0; i<tab.length; i++){
             tab[i] = Character.toLowerCase(tab[i]);
         }
     }
 	
+    // Recherche si le caractere est présent dans le tableau
 	public static boolean rechercherCaractere(char[] tab, char caractereRecherché){
 		boolean appartientTableau = false;
 		for(int i=0; i<tab.length; i++){
@@ -28,6 +31,7 @@ public class RechercheTableau {
 		return appartientTableau;
 	}
 
+    // Calcul le nombre d'occurence du caractere dans le tableau
     public static int calculerOccurence(char[] tab, char caractereRecherché){
         int nbOccurence = 0;
         for(int i=0; i<tab.length; i++){
@@ -38,6 +42,7 @@ public class RechercheTableau {
         return nbOccurence;
     }
 
+    // Compare si le tableau 2 contient tous les caractères du tableau 1 au moins une fois
     public static boolean comparerTableau(char[] tab1, char[] tab2){
 		boolean tableauIdentique = false;
 		int comparaisonChar = 0;
