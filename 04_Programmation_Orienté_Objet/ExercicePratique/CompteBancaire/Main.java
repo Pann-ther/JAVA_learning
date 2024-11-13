@@ -5,7 +5,7 @@ public class Main {
 
        CompteBancaire client2 = new CompteBancaire("Ursula Chebbah");
        client2.deposer(1000);
-       client2.retirer(500);
+       client2.retirer(1500);
        System.out.println(client2.toString());
 
     }

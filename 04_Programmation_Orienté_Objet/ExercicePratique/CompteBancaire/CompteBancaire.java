@@ -85,7 +85,7 @@ public class CompteBancaire {
                 if(montant<=0){
                     System.out.println("Un montant nul ou positif ne peut etre retiré du compte");
                 } else if((solde-montant)<0) {
-                    System.out.println("Le montant du solde est insuffisant");
+                    System.out.println("Le montant du solde est insuffisant pour effectuer ce retrait");
                 } else {
                     solde= solde-montant;
                     System.out.println("Vous avez retirez "+montant+" €");
