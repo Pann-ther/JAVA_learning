@@ -10,7 +10,8 @@ L'objectif de cette documentation est de partager les étapes de mon apprentissa
 Ma roadmap d'apprentissage est divisée en plusieurs étapes, chacune comprenant :
 
 - **Cours théoriques** : Concepts fondamentaux à maîtriser.
-- **Exercices pratiques** : Activités pour appliquer les connaissances acquises.
+- **Brouillon** :  Manipulation et applications des concepts durant les cours, avec des essais et expérimentations pour mieux comprendre et intégrer les notions.
+- **Exercice pratique** : Pour appliquer les connaissances acquises avec la création de programmes et l'implémentation de solutions concrètes à des problèmes de programmation.
 
 ## Étapes de la roadmap
 
