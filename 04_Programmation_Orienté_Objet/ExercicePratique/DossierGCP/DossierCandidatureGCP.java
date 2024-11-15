@@ -1,6 +1,6 @@
 import java.util.Scanner;
 
-public class DossierCandidatureGCP{
+public class DossierCandidatureGCP {
 	private String nom;
 	private String numero;
 	private boolean emargement;
@@ -9,44 +9,60 @@ public class DossierCandidatureGCP{
 
 	static Scanner scanner = new Scanner(System.in);
 
-	public DossierCandidatureGCP(String nom, String numero){
+	public DossierCandidatureGCP(String nom, String numero) {
 		this.nom = nom;
 		this.numero = numero;
+		this.status = "ENREGISTRE";
+		this.note = -1;
 	}
 
-	public void enregistrementEmargementEpreuveEcrite(){
-		String input;
-		System.out.print("Veuillez signer la fiche d'emargement avec votre nom: ");
-		if(scanner.hasNextLine()){
-            input = scanner.nextLine();
-            if (input != null && !input.trim().isEmpty()) {
-                emargement = true;
-            } else {
-			    System.out.println("Le candidat n'a pas émargé, le candidat ne peut plus etre admis");
-		    }
-        }
-		
-	}
-
-	public void enregistrerNoteEpreuveEcrite(int note){
-		if (emargement){
-			this.note = note;
-		} else {
-			note = 0;
+	public void enregistrerEmargementEpreuveEcrite() throws Exception{
+		if ("ADMIS".equals(status)) {
+			throw new Exception();
 		}
+		this.emargement = true;
+		status = "EMARGE";
 	}
 
-	public void publierResultatFinal(){
-		if(note >= 10){
+	public void enregistrerNoteEpreuveEcrite(int note) throws Exception {
+		if ("ADMIS".equals(status)) {
+			throw new Exception();
+		}
+		if (!emargement) {
+			throw new Exception();
+		}
+		this.note = note;
+		status = "NOTE_TRANSMISE";
+	}
+
+	public void publierResultatFinal() throws Exception{
+		if ("ENREGISTRE".equals(status)) {
+			throw new Exception();
+		}
+		if ("ADMIS".equals(status)) {
+			throw new Exception();
+		}
+		if (note >= 10) {
 			status = "ADMIS";
-			System.out.println("Note: "+note+"  Statut: "+status);
 		} else {
 			status = "NON_ADMIS";
-			System.out.println("Note: "+note+"  Statut: "+status);
 		}
 	}
-	
-	public String toString(){
-		return "nom: "+nom+" numero: "+numero+" status: "+status+" note: "+note;
+
+	public String toString() {
+		return "nom: " + nom + " numero: " + numero + " status: " + status + " note: " + note;
+	}
+
+	public static void main(String[] args) {
+		try {
+			DossierCandidatureGCP candidat1 = new DossierCandidatureGCP("Kylian", "1230303");
+			candidat1.enregistrerEmargementEpreuveEcrite();
+			candidat1.enregistrerNoteEpreuveEcrite(0);
+			candidat1.publierResultatFinal();
+			System.out.println(candidat1.toString());
+		} catch (Exception e) {
+			System.out.println("Candidat absent");
+		}
+		
 	}
 }
