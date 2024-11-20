@@ -39,6 +39,7 @@ public class Personne {
 	public void setNumeroTel(String numeroTel){
 		this.numeroTel = numeroTel;
 	}
+    
     public boolean aMemeNomQue(Personne personne){
         return this.nom.equalsIgnoreCase(personne.nom);
     }
