@@ -54,8 +54,12 @@ public class Vache {
 
     }
 
-    public static void setPrixKilo() {
-        prixKilo = lireDouble("Veuillez entrez le prix au kilo des vaches: ");
+    public static void setPrixKilo(double nouveauPrix) {
+        if(nouveauPrix > 0){
+            prixKilo = nouveauPrix ;
+        } else {
+            System.out.println("Erreur: le prix doit etre positif");
+        }
     }
 
     // reinitialise le poids avec celui de la nouvelle pesée et recalcul le prix de la vache
