@@ -44,13 +44,24 @@ public class VentesConcessionnaire{
 		}
 	}
 
+	public static void chiffreAffaire(int[][] t, String[] nom, int[] prix){
+		for(int i=0; i<t.length; i++){
+			int ca = 0;
+			for(int j=0; j<t[i].length; j++){
+				ca += prix[j]*t[i][j];
+			}
+			System.out.println("Le chiffre d'affaire de "+nom[i]+" est de "+ca+" euros");
+		}
+	}
 	public static void main(String[]args){
 		String[] modelesVoitures ={"Twingo","Clio","Megane","Velsatis"};
-		String[] Vendeurs ={"André","Ingemar","Jean","Cindy","Joey"};
-		int[][] ventesTab = new int[5][4];
-		//int[][] ventesTab = {{0,3,2,0},{2,3,0,1},{1,1,1,1},{5,1,0,0},{1,1,2,0}};
-		entrerVente(ventesTab, Vendeurs, modelesVoitures);
-		venteModele(ventesTab, modelesVoitures);
+		String[] vendeurs ={"André","Ingemar","Jean","Cindy","Joey"};
+		int[] prixModele = {15000,18000,28000,35000};
+		//int[][] ventesTab = new int[5][4];
+		int[][] ventesTab = {{0,3,2,0},{2,3,0,1},{1,1,1,1},{5,1,0,0},{1,1,2,0}};
+		//entrerVente(ventesTab, vendeurs, modelesVoitures);
+		//venteModele(ventesTab, modelesVoitures);
+		chiffreAffaire(ventesTab, vendeurs, prixModele);
 		scan.close();
 	}
 }
