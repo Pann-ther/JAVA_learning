@@ -33,6 +33,7 @@ public class OccupationSalle {
         System.out.println("Le taux d'occupation de la salle est de " + String.format("%.2f", taux) + "%");
     }
 
+    // Verifie si la salle est occupé au créneau auquel l'utilisateur veut reserver la salle
     public static void reservation(boolean[][] t, String[] jour, String[] horaire) {
         int indexJour = rechercheIndex(jour, "Quelle jour voulez vous reserver la salle? (lundi/mardi/mercredi/jeudi/vendredi): ", 
         "Vous n'avez pas entré le bon jour de la semaine");
@@ -46,6 +47,7 @@ public class OccupationSalle {
         }
     }
 
+    // Recherche une chaine de caractere entré par l'utilisateur, dans un tableau afin de retourner l'index de la chaine de caractere si elle est trouvé
     public static int rechercheIndex(String[] tab, String msg, String msgErreur) {
         String input="";
         int index = 0;
@@ -64,6 +66,7 @@ public class OccupationSalle {
         return index;
     }
 
+    // Gere l'entrée utilisateur de type string
     public static String lireString(String msg){
         boolean correct;
         String input="";
