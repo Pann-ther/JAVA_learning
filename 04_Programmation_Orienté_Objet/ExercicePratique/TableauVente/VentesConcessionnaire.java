@@ -16,7 +16,7 @@ public class VentesConcessionnaire{
 				scan.next();
 				correct = false;
 			}
-		} while (!correct);
+		} while (!correct || input <=0);
 		return input;
 	}
 
@@ -44,11 +44,12 @@ public class VentesConcessionnaire{
 		}
 	}
 
+	// Calcul le chiffre d'affaire par vendeur en fonction du nombre et du prix des voitures vendues
 	public static void chiffreAffaire(int[][] t, String[] nom, int[] prix){
 		for(int i=0; i<t.length; i++){
 			int ca = 0;
 			for(int j=0; j<t[i].length; j++){
-				ca += prix[j]*t[i][j];
+				ca += prix[j]*t[i][j]; // recupere le prix du modele avec l'index de la colonne du tableau t pour le multiplier avec le nombre de voitures
 			}
 			System.out.println("Le chiffre d'affaire de "+nom[i]+" est de "+ca+" euros");
 		}
