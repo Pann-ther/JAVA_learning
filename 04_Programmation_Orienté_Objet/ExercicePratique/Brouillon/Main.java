@@ -1,8 +1,13 @@
 public class Main {
     public static void main(String[] args) {
-        CompteDecouvert compte1 = new CompteDecouvert("Kylian");
-        System.out.println(compte1.toString());
-        compte1.deposer(1500);
-        compte1.retirer(2001);
+        Produit nutella = new Produit("Nutella", "028849384", 3);
+        Produit steak = new Produit("Steak Haché", "849384", 1);
+        Produit beurre = new Produit("Beurre", "028849384", 4);
+        Panier panier = new Panier();
+        panier.ajouterProduit(nutella);
+        panier.ajouterProduit(nutella);
+        panier.ajouterProduit(beurre);
+        panier.ajouterProduit(steak);
+        System.out.println(panier.afficherPanier());
     }
 }
