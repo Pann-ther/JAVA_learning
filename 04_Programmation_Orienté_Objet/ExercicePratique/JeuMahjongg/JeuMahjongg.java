@@ -1,16 +1,16 @@
 import java.util.ArrayList;
 import java.util.Random;
 
-public class JeuMahjong {
+public class JeuMahjongg {
     // Attribut du jeu du Mahjong
     // Attributs en final car ce sont des caracteristiques sont immuables
     private final String[] categorie = { "C", "B", "K", "S", "N", "O", "E", "V", "R", "W", "F", "P" };
     private final int[] numero = { 1, 2, 3, 4, 5, 6, 7, 8, 9 };
     private Random random; // Pour le tirage aléatoire des tuiles
-    private ArrayList<Tuile> tuiles; // Pour stocker les 144 tuiles apres l'initialisation de JeuMahjong
+    private ArrayList<Tuile> tuiles; // Pour stocker les 144 tuiles apres l'initialisation de JeuMahjongg
 
     // Constructeur
-    public JeuMahjong() {
+    public JeuMahjongg() {
         tuiles = new ArrayList<Tuile>();
         random = new Random();
 
