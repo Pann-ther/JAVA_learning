@@ -3,9 +3,6 @@ import java.util.Random;
 
 public class JeuMahjongg {
     // Attribut du jeu du Mahjong
-    // Attributs en final car ce sont des caracteristiques sont immuables
-    private final String[] categorie = { "C", "B", "K", "S", "N", "O", "E", "V", "R", "W", "F", "P" };
-    private final int[] numero = { 1, 2, 3, 4, 5, 6, 7, 8, 9 };
     private Random random; // Pour le tirage aléatoire des tuiles
     private ArrayList<Tuile> tuiles; // Pour stocker les 144 tuiles apres l'initialisation de JeuMahjongg
 
@@ -15,19 +12,41 @@ public class JeuMahjongg {
         random = new Random();
 
         // boucle pour initialiser automatiquement les 144 tuiles
-        for (int i = 0; i < categorie.length; i++) {
+        for (int i = 0; i < Tuile.getCategoriesValides().length; i++) {
             if (i < 3) {
-                for (int j = 0; j < numero.length; j++) {
+                for (int j = 0; j < 9; j++) {
                     for (int k = 0; k < 4; k++) {
-                        tuiles.add(new Tuile(categorie[i], j + 1));
+                        tuiles.add(new Tuile(Tuile.getCategoriesValides()[i], j + 1));
                     }
                 }
             } else {
                 for (int k = 0; k < 4; k++) {
-                    tuiles.add(new Tuile(categorie[i], 1));
+                    tuiles.add(new Tuile(Tuile.getCategoriesValides()[i], 1));
                 }
             }
         }
+    }
+
+    // Permet de tirer une tuile aleatoirement et de la retirer de l'ensemble
+    public String tirerTuile() {
+        int index = random.nextInt(tuiles.size());
+        Tuile tuile = tuiles.get(index);
+        tuiles.remove(tuile);
+        return "Tuile tirée: " + tuile.toString();
+    }
+
+    // Verifie combien y'a t'ils de tuiles restantes en jeu
+    public String tuilesRestantes(){
+        int nbTuiles = tuiles.size();
+        return "Tuiles restantes: "+nbTuiles;
+    }
+
+    // Verifie si le plateau de tuiles est vide
+    public boolean estVide(){
+        if(tuiles.isEmpty()){
+            return true;
+        }
+        return false;
     }
 
     // Permet le tirage de deux tuiles et verifie si elles sont identiques pour valider le tirage et les retirer du jeu
@@ -38,9 +57,10 @@ public class JeuMahjongg {
         int index2 = random.nextInt(tuiles.size());
         Tuile tuile2 = tuiles.get(index2);
         System.out.println("Tuile tiré: " + tuiles.get(index2).toString());
-        
+
         if (tuile1.estEgale(tuile2)) {
-            System.out.println("Les deux tuiles " + tuile1.toString() + " sont identiques, les deux tuiles ont été retiré");
+            System.out.println(
+                    "Les deux tuiles " + tuile1.toString() + " sont identiques, les deux tuiles ont été retiré");
             System.out.println("Tuiles restantes: " + tuiles.size());
             tuiles.remove(index1);
             tuiles.remove(index2);
@@ -52,14 +72,15 @@ public class JeuMahjongg {
         }
     }
 
-    public String toString(){
-        String liste ="";
+    // Affiche les pieces disponibles a la pioche
+    public String toString() {
+        String liste = "";
         int compteur = 0;
-        for(Tuile tuile : tuiles){
-            liste += tuile.toString()+" ";
-            compteur ++;
-            if(compteur % 12 == 0){
-                liste += "\n" ;
+        for (Tuile tuile : tuiles) {
+            liste += tuile.toString() + " ";
+            compteur++;
+            if (compteur % 12 == 0) {
+                liste += "\n";
             }
         }
         return liste;
