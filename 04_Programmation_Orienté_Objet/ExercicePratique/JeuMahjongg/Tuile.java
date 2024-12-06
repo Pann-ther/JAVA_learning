@@ -10,11 +10,11 @@ public class Tuile {
     
     // Constructeur
     public Tuile(String categorie, int numero){
-        if(!estDansCategoriesValides(categorie)){
+        if(!estDansCategorie(categorie, categoriesValides)){
             throw new IllegalArgumentException("La catégorie "+categorie+" n'existe pas");
         }else if (numero < 1 || numero > 9) {
             throw new IllegalArgumentException("Le numéro "+ numero + " n'existe pas");
-        } else if(numero > 1 && estDansCategoriesSpeciales(categorie)) {
+        } else if(numero > 1 && estDansCategorie(categorie, categoriesSpeciales)) {
             throw new IllegalArgumentException("La tuile "+ categorie+numero+" n'existe pas");
         }
         
@@ -23,8 +23,8 @@ public class Tuile {
     }
 
     // Verifie si categorie fait partie du tableau categoriesValides
-    public boolean estDansCategoriesValides(String categorie){
-        for(String c : categoriesValides){
+    public boolean estDansCategorie(String categorie, String[] tab){
+        for(String c : tab){
             if(c.equalsIgnoreCase(categorie)){
                 return true;
             }
@@ -32,16 +32,7 @@ public class Tuile {
         return false;
     }
 
-    // Verifie si categorie fait partie du tableau categoriesSpeciales
-    public boolean estDansCategoriesSpeciales(String categorie){
-        for(String c : categoriesSpeciales){
-            if(c.equalsIgnoreCase(categorie)){
-                return true;
-            }
-        }
-        return false;
-    }
-
+    
     //Getters
     public static String[] getCategoriesValides() {
         return categoriesValides;
@@ -57,9 +48,7 @@ public class Tuile {
 
     // Verifie si deux tuiles sont identiques (categorie et numero) en ayant des instances differentes
     public boolean estEgale(Tuile objet){
-        if (this == objet) {
-            return false;
-        } else if (this != objet && this.getCategorie().equals(objet.getCategorie()) && this.getNumero() == objet.getNumero()) {
+        if (this != objet && this.getCategorie().equals(objet.getCategorie()) && this.getNumero() == objet.getNumero()) {
             return true;
         } else{
             return false;
