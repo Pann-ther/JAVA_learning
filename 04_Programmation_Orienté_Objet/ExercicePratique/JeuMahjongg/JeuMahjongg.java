@@ -25,8 +25,6 @@ public class JeuMahjongg {
         }
     }
 
-    
-
     // Permet de tirer une tuile aleatoirement et de la retirer de l'ensemble
     public Tuile tirerTuile() {
         int index = random.nextInt(tuiles.size());
