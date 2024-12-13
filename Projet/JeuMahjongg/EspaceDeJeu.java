@@ -19,7 +19,7 @@ public class EspaceDeJeu {
             for (int j = 0; j < colonnes; j++) {
                 ArrayList<Tuile> colonne = new ArrayList<>();
                 for (int k = 0; k < hauteur; k++) {
-                    colonne.add(null);
+                    colonne.add(null); // initialise toutes les cases avec null
                 }
                 ligne.add(colonne);
             }

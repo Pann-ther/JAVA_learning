@@ -2,8 +2,7 @@ import java.util.ArrayList;
 
 public class Main {
 
-    // Test si lors d'un tirage de deux tuiles si elles sont identiques sans etre de
-    // me instance pour valider le tirage et les retirer du jeu
+    // Test si lors d'un tirage de deux tuiles si elles sont identiques sans etre de me instance pour valider le tirage et les retirer du jeu
     public static void tirageTuiles() {
         int index1 = JeuMahjongg.random.nextInt(JeuMahjongg.tuiles.size());
         Tuile tuile1 = JeuMahjongg.tuiles.get(index1);
@@ -43,9 +42,11 @@ public class Main {
     }
 
     public static void main(String[] args) {
+
+        // Test initialisation de l'espace de jeu et utilisation de la methode pour enlever du plateau 2 tuiles si se sont une paire d'instances differentes
         try {
             JeuMahjongg plateau = new JeuMahjongg(); // Initialise le plateau de jeu avec les 144 tuiles
-            int[][] disp = {
+            int[][] disp = { // coordonnées du positionnement des tuiles dans l'espace de jeu 
                     { 0, 0, 0 }, { 0, 1, 0 }, { 0, 2, 0 }, { 0, 3, 0 }, { 0, 4, 0 }, { 0, 8, 0 },
                     { 0, 9, 0 }, { 0, 10, 0 }, { 0, 11, 0 }, { 0, 12, 0 }, { 1, 0, 0 }, { 1, 1, 0 }, { 1, 2, 0 },
                     { 1, 3, 0 }, { 1, 5, 0 }, { 1, 6, 0 }, { 1, 7, 0 }, { 1, 9, 0 }, { 1, 10, 0 }, { 1, 11, 0 },
@@ -70,13 +71,13 @@ public class Main {
             };
             EspaceDeJeu plateauJeu = new EspaceDeJeu(7, 13, 5);
             ArrayList<Tuile> tuiles = JeuMahjongg.getTuiles();
-            plateauJeu.placementTuiles(disp, tuiles);
+            plateauJeu.placementTuiles(disp, tuiles); // repartition aléatoire des tuiles dans l'espace de jeu
             Tuile tuile1 = new Tuile("K", 9);
             Tuile tuile2 = new Tuile("K", 9);
             // System.out.println(plateauJeu.debugger());
-            System.out.println(plateauJeu.toString());
+            System.out.println(plateauJeu.toString()); // affichage de l'espace de jeu avant execution de la methode
             plateauJeu.tirerTuiles(tuile1,tuile2);
-            System.out.println(plateauJeu.toString());
+            System.out.println(plateauJeu.toString()); // affichage de l'espace de jeu apres execution de la methode
         } catch (Exception e) {
             System.out.println(e.getMessage());
         }
