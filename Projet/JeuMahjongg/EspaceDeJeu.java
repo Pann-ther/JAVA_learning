@@ -5,25 +5,30 @@ public class EspaceDeJeu {
     private int lignes;
     private int colonnes;
     private int hauteur;
-    private ArrayList<ArrayList<ArrayList<Tuile>>> espaceDeJeu; // Tableau en 3 dimensions avec une imbrication des ArrayList
+    ArrayList<Tuile>[][] espaceDeJeu; // Tableau en 3 dimensions avec une imbrication des ArrayList
 
     // Constructeur
+    @SuppressWarnings("unchecked")
     public EspaceDeJeu(int lignes, int colonnes, int hauteur) {
         this.lignes = lignes;
         this.colonnes = colonnes;
         this.hauteur = hauteur;
-        espaceDeJeu = new ArrayList<>();
+
+        espaceDeJeu = (ArrayList<Tuile>[][]) new ArrayList[lignes][colonnes];
 
         for (int i = 0; i < lignes; i++) {
-            ArrayList<ArrayList<Tuile>> ligne = new ArrayList<>();
             for (int j = 0; j < colonnes; j++) {
-                ArrayList<Tuile> colonne = new ArrayList<>();
-                for (int k = 0; k < hauteur; k++) {
-                    colonne.add(null); // initialise toutes les cases avec null
-                }
-                ligne.add(colonne);
+                espaceDeJeu[i][j] = new ArrayList<>();// creation des piles
             }
-            espaceDeJeu.add(ligne);
+        }
+
+        // initialise les cases de l'espace de jeu
+        for (int i = 0; i < lignes; i++) {
+            for (int j = 0; j < colonnes; j++) {
+                for (int k = 0; k < hauteur; k++) {
+                    espaceDeJeu[i][j].add(null);
+                }
+            }
         }
     }
 
@@ -34,99 +39,79 @@ public class EspaceDeJeu {
         }
 
         for (int i = 0; i < dispositions.length; i++) {
-            int index = 0;
-
-            index = JeuMahjongg.random.nextInt(tuiles.size());
-
-            Tuile tuileSelectionnee = JeuMahjongg.tuiles.get(index);
+            Tuile tuileSelectionnee = JeuMahjongg.tirerTuile();
             int ligne = dispositions[i][0];
             int colonne = dispositions[i][1];
             int pile = dispositions[i][2];
-            if (ligne >= 0 && ligne < lignes && colonne >= 0 && colonne < colonnes && pile >= 0 && pile < hauteur) {
-                espaceDeJeu.get(ligne).get(colonne).set(pile, tuileSelectionnee);
-                tuiles.remove(tuileSelectionnee);
+            if (ligne >= 0 && ligne < lignes && colonne >= 0 && colonne < colonnes) {
+                espaceDeJeu[ligne][colonne].set(pile, tuileSelectionnee);
+                tuiles.remove(tuileSelectionnee); // retire la tuile
             } else {
                 throw new Exception("Les coordonnées de la tuile sont en dehors des limites de l'espace de jeu");
             }
         }
     }
 
-    // Retire les tuiles du plateau si elles sont identiques en etant d'instances differentes
+    // Retire les tuiles du plateau si elles sont identiques en etant d'instances
+    // differentes
     public void tirerTuiles(Tuile t1, Tuile t2) {
-        boolean occurence1 = false;
-        int ligne1 = 0;
-        int colonne1 = 0;
-        int pile1 = 0;
-        boolean occurence2 = false;
-        int ligne2 = 0;
-        int colonne2 = 0;
-        int pile2 = 0;
+        if (t1 != t2 && t1.estEgale(t2)) {
+            int[] coord = trouverCoordonnées(t1, t2);
 
-        // Verifie si t1 et t2 sont differents objets et ont les mêmes attributs
-        if (t1 != t2) {
-            if (t1.getCategorie() == t2.getCategorie() && t1.getNumero() == t2.getNumero()) {
-                for (int i = 0; i < espaceDeJeu.size(); i++) {
-                    for (int j = 0; j < espaceDeJeu.get(i).size(); j++) {
-                        for (int k = espaceDeJeu.get(i).get(j).size() - 1; k >= 0; k--) {
-                            Tuile tuileActuelle = espaceDeJeu.get(i).get(j).get(k);
+            if (coord != null && coord != null) {
+                espaceDeJeu[coord[0]][coord[1]].set(coord[2], null);
+                espaceDeJeu[coord[3]][coord[4]].set(coord[5], null);
+            }
+        }
+    }
 
-                            if (tuileActuelle != null) {
-                                if (tuileActuelle.estEgale(t1)) {
-                                    if (tuileActuelle.estEgale(t1) && !occurence1) {
-                                        occurence1 = true;
-                                        ligne1 = i;
-                                        colonne1 = j;
-                                        pile1 = k;
-                                        break;
-                                    }
+    // Cherche les tuiles dans l'espace de jeu et, si elles sont trouvées, renvoie
+    // leurs coordonnées dans un tableau
+    public int[] trouverCoordonnées(Tuile t1, Tuile t2) {
+        int[] coord = new int[6];
+        for (int i = 0; i < coord.length; i++) {
+            coord[i] = -1;
+        }
 
-                                    if (tuileActuelle.estEgale(t2) && !occurence2) {
-                                        occurence2 = true;
-                                        ligne2 = i;
-                                        colonne2 = j;
-                                        pile2 = k;
-                                        break;
-                                    }
-                                } else {
-                                    break;
-                                }
-
-                            }
+        for (int i = 0; i < espaceDeJeu.length; i++) {
+            for (int j = 0; j < espaceDeJeu[i].length; j++) {
+                for (int k = espaceDeJeu[i][j].size() - 1; k >= 0; k--) {
+                    Tuile tuileActuelle = espaceDeJeu[i][j].get(k);
+                    if (tuileActuelle != null) {
+                        if (tuileActuelle.estEgale(t1) && coord[0] == -1) {
+                            coord[0] = i;
+                            coord[1] = j;
+                            coord[2] = k;
+                            break;
+                        } else if (tuileActuelle.estEgale(t2) && coord[0] != -1) {
+                            coord[3] = i;
+                            coord[4] = j;
+                            coord[5] = k;
+                            return coord;
+                        } else {
+                            break;
                         }
                     }
                 }
-
-                // Verifie si la paire de tuile est presente en sommet de pile
-                if (occurence1 && occurence2) {
-                    System.out.println("Les deux tuiles ont été trouvées dans l'espace de jeu.");
-                    espaceDeJeu.get(ligne1).get(colonne1).set(pile1, null);
-                    espaceDeJeu.get(ligne2).get(colonne2).set(pile2, null);
-
-                } else {
-                    System.out.println("Les tuiles n'ont pas été trouvées ou sont en paire.");
-                }
-            } else {
-                System.out.println("Les tuiles n'ont pas le même dessin.");
             }
-        } else {
-            System.out.println(t1 + " et " + t2 + " sont de la même instance.");
         }
+        return null;
     }
 
     // Affiche le positionnement de toutes les tuiles dans l'espace de jeu
     public String debugger() {
         StringBuilder ret = new StringBuilder();
 
-        for (int i = 0; i < espaceDeJeu.size(); i++) {
+        for (int i = 0; i < espaceDeJeu.length; i++) {
             ret.append("Ligne ").append(i).append("\n");
-            for (int j = 0; j < espaceDeJeu.get(i).size(); j++) {
+            for (int j = 0; j < espaceDeJeu[i].length; j++) {
                 ret.append("  ").append("Colonne ").append(j).append("\n");
-                for (int k = 0; k < espaceDeJeu.get(i).get(j).size(); k++) {
+                for (int k = 0; k < espaceDeJeu[i][j].size(); k++) {
                     if (k == 0) {
-                        ret.append("    ").append("p").append(k).append(" ").append(espaceDeJeu.get(i).get(j).get(k))
+                        ret.append("    ").append("p").append(k).append(" ").append(espaceDeJeu[i][j].get(k))
                                 .append(" | ");
                     } else {
-                        ret.append("p").append(k).append(" ").append(espaceDeJeu.get(i).get(j).get(k)).append(" | ");
+                        ret.append("p").append(k).append(" ").append(espaceDeJeu[i][j].get(k)).append(" | ");
                     }
                 }
                 ret.append("\n");
@@ -135,34 +120,36 @@ public class EspaceDeJeu {
         return ret.toString();
     }
 
-    // Affiche l'espace de jeu vu par le joueur en affichant la premiere tuile presente dans la pile
+    // Affiche l'espace de jeu vu par le joueur en affichant la premiere tuile
+    // presente dans la pile
     public String toString() {
         StringBuilder ret = new StringBuilder();
 
         ret.append("   "); // alignement
         // Numéros des colonnes
         for (int i = 0; i < 1; i++) {
-            for (int j = 0; j < espaceDeJeu.get(i).size(); j++) {
+            for (int j = 0; j < espaceDeJeu[i].length; j++) {
                 if (j >= 10) {
                     ret.append(j).append(" ");
-                } else if (j > 3 && j<5 ) {
+                } else if (j > 3 && j < 5) {
                     ret.append(j).append("   ");
-                }else if (j == 7) {
+                } else if (j == 7) {
                     ret.append(j).append("   ");
-                    
-                }else {
+
+                } else {
                     ret.append(j).append("  ");
                 }
             }
             ret.append("\n");
         }
 
-        for (int i = 0; i < espaceDeJeu.size(); i++) {
+        for (int i = 0; i < espaceDeJeu.length; i++) {
             ret.append(i).append(" "); // Numéros de lignes
-            for (int j = 0; j < espaceDeJeu.get(i).size(); j++) {
-                for (int k = espaceDeJeu.get(i).get(j).size() - 1; k >= 0; k--) {
-                    if (espaceDeJeu.get(i).get(j).get(k) == null) {
-                        if (espaceDeJeu.get(i).get(j).get(0) == null) {
+            for (int j = 0; j < espaceDeJeu[i].length; j++) {
+                for (int k = espaceDeJeu[i][j].size() - 1; k >= 0; k--) {
+                    Tuile tuileActuelle = espaceDeJeu[i][j].get(k);
+                    if (tuileActuelle == null) {
+                        if (espaceDeJeu[i][j].get(0) == null) { // adapte la taille des cases vides sur l'espace de jeu
                             if (j == 0) {
                                 ret.append("    ");
                                 break;
@@ -186,27 +173,27 @@ public class EspaceDeJeu {
                                 break;
                             }
                         }
-                    } else {
+                    } else { // adapte les <> en fonction de la position de la tuile sur l'espace de jeu
                         if (j == 0) {
-                            ret.append("<").append(espaceDeJeu.get(i).get(j).get(k)).append(">");
+                            ret.append("<").append(espaceDeJeu[i][j].get(k)).append(">");
                             break;
                         } else if (j > 0 && j < 5) {
-                            ret.append(espaceDeJeu.get(i).get(j).get(k)).append(">");
+                            ret.append(espaceDeJeu[i][j].get(k)).append(">");
                             break;
                         } else if (j == 5) {
-                            ret.append("<").append(espaceDeJeu.get(i).get(j).get(k));
+                            ret.append("<").append(espaceDeJeu[i][j].get(k));
                             break;
                         } else if (j == 6) {
-                            ret.append("<").append(espaceDeJeu.get(i).get(j).get(k)).append(">");
+                            ret.append("<").append(espaceDeJeu[i][j].get(k)).append(">");
                             break;
                         } else if (j == 7) {
-                            ret.append(espaceDeJeu.get(i).get(j).get(k)).append(">");
+                            ret.append(espaceDeJeu[i][j].get(k)).append(">");
                             break;
                         } else if (j > 7 && j < 12) {
-                            ret.append("<").append(espaceDeJeu.get(i).get(j).get(k));
+                            ret.append("<").append(espaceDeJeu[i][j].get(k));
                             break;
                         } else if (j == 12) {
-                            ret.append("<").append(espaceDeJeu.get(i).get(j).get(k)).append(">");
+                            ret.append("<").append(espaceDeJeu[i][j].get(k)).append(">");
                             break;
                         }
                     }
