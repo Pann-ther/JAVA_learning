@@ -74,7 +74,7 @@ public class Main {
             plateauJeu.placementTuiles(disp, tuiles); // repartition aléatoire des tuiles dans l'espace de jeu
             Tuile tuile1 = new Tuile("K", 9);
             Tuile tuile2 = new Tuile("K", 9);
-            // System.out.println(plateauJeu.debugger());
+            System.out.println(plateauJeu.debugger());
             System.out.println(plateauJeu.toString());
             System.out.println(plateauJeu.tirerTuiles(tuile1, tuile2));
             System.out.println(plateauJeu.toString());

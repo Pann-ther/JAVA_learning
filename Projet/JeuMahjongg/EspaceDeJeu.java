@@ -5,7 +5,7 @@ public class EspaceDeJeu {
     private int lignes;
     private int colonnes;
     private int hauteur;
-    ArrayList<Tuile>[][] espaceDeJeu; // Tableau en 2 dimensions contenant des listes (piles) de tuiles
+    private ArrayList<Tuile>[][] espaceDeJeu; // Tableau en 2 dimensions contenant des listes (piles) de tuiles
 
     // Constructeur
     @SuppressWarnings("unchecked")
@@ -27,7 +27,7 @@ public class EspaceDeJeu {
         for (int i = 0; i < lignes; i++) {
             for (int j = 0; j < colonnes; j++) {
                 for (int k = 0; k < hauteur; k++) {
-                    espaceDeJeu[i][j].add(null);
+                    espaceDeJeu[i][j].add(null); // permet de laisser "des cases vides pleines"et de les representer graphiquement
                 }
             }
         }
