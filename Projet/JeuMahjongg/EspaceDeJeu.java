@@ -56,7 +56,7 @@ public class EspaceDeJeu {
     // differentes
     public void tirerTuiles(Tuile t1, Tuile t2) {
         if (t1 != t2 && t1.estEgale(t2)) {
-            int[] coord = trouverCoordonnées(t1, t2);
+            int[] coord = trouverCoordonnees(t1, t2);
 
             if (coord != null && coord != null) {
                 espaceDeJeu[coord[0]][coord[1]].set(coord[2], null);
@@ -67,7 +67,7 @@ public class EspaceDeJeu {
 
     // Cherche les tuiles dans l'espace de jeu et, si elles sont trouvées, renvoie
     // leurs coordonnées dans un tableau
-    public int[] trouverCoordonnées(Tuile t1, Tuile t2) {
+    public int[] trouverCoordonnees(Tuile t1, Tuile t2) {
         int[] coord = new int[6];
         for (int i = 0; i < coord.length; i++) {
             coord[i] = -1;
