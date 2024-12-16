@@ -25,6 +25,7 @@ public class JeuMahjongg {
         }
     }
 
+    // Getter
     public static ArrayList<Tuile> getTuiles() {
         return tuiles;
     }
@@ -63,4 +64,5 @@ public class JeuMahjongg {
         }
         return liste;
     }
+    
 }

@@ -7,9 +7,11 @@ public class Tuile {
     private static final String[] categoriesSpeciales = {"S", "N", "O", "E", "V", "R", "W", "F", "P" };
     private String categorie;
     private int numero;
+    private int[] coordonnees;
     
     // Constructeur
     public Tuile(String categorie, int numero){
+        coordonnees = new int[3];
         if(!estDansCategorie(categorie, categoriesValides)){
             throw new IllegalArgumentException("La catégorie "+categorie+" n'existe pas");
         }else if (numero < 1 || numero > 9) {
@@ -44,6 +46,18 @@ public class Tuile {
 
     public int getNumero() {
         return numero;
+    }
+
+    public int[] getCoordonnees() {
+        return coordonnees;
+    }
+
+    // Setter
+    public void setCoordonnees(int[] coordonnees) {
+        if (coordonnees.length != 3) {
+            throw new IllegalArgumentException("Le format des coordonnées n'est pas correct");
+        }
+        this.coordonnees = coordonnees;
     }
 
     // Verifie si deux tuiles sont identiques (categorie et numero) en ayant des instances differentes
