@@ -1,51 +1,11 @@
 import java.util.ArrayList;
 
 public class Main {
-
-    // Test si lors d'un tirage de deux tuiles si elles sont identiques sans etre de me instance pour valider le tirage et les retirer du jeu
-    public static void tirageTuiles() {
-        int index1 = JeuMahjongg.random.nextInt(JeuMahjongg.tuiles.size());
-        Tuile tuile1 = JeuMahjongg.tuiles.get(index1);
-        System.out.println("Tuile tiré: " + JeuMahjongg.tuiles.get(index1).toString());
-        int index2;
-        do {
-            index2 = JeuMahjongg.random.nextInt(JeuMahjongg.tuiles.size());
-        } while (index1 == index2);
-        Tuile tuile2 = JeuMahjongg.tuiles.get(index2);
-        System.out.println("Tuile tiré: " + JeuMahjongg.tuiles.get(index2).toString());
-
-        if (tuile1.estEgale(tuile2)) {
-            System.out.println("Les deux tuiles " + tuile1 + " et " + tuile2
-                    + " sont identiques sans etre de meme instance, les deux tuiles ont été retiré");
-            System.out.println("Tuiles restantes: " + JeuMahjongg.tuiles.size());
-            JeuMahjongg.tuiles.remove(index1);
-            JeuMahjongg.tuiles.remove(index2);
-        } else {
-            System.out.println("Les deux tuiles " + tuile1 + " et " + tuile2
-                    + " ne sont pas identique sans etre de meme instance, elles ne peuvent pas etre retirées");
-        }
-
-        if (JeuMahjongg.tuiles.isEmpty()) {
-            System.out.println("Toutes les paires ont été retirées. Bravo, vous avez gagné !");
-        }
-    }
-
-    public static void appariementTuile(Tuile t1, Tuile t2) {
-        if (t1.estEgale(t2)) {
-            System.out.println("On peut apparier " + t1 + " et " + t2
-                    + " car elles sont identiques et de 2 instances differentes");
-        } else {
-            System.out.println("On ne peut pas apparier " + t1 + " et " + t2
-                    + " car elles ne sont pas identiques et/ou de meme instance");
-
-        }
-    }
-
     public static void main(String[] args) {
 
         // Test initialisation de l'espace de jeu et utilisation de la methode pour enlever du plateau 2 tuiles si se sont une paire d'instances differentes
         try {
-            JeuMahjongg plateau = new JeuMahjongg(); // Initialise le plateau de jeu avec les 144 tuiles
+            JeuMahjongg ensembleTuiles = new JeuMahjongg(); // Initialise le plateau de jeu avec les 144 tuiles
             int[][] disp = { // coordonnées du positionnement des tuiles dans l'espace de jeu 
                     { 0, 0, 0 }, { 0, 1, 0 }, { 0, 2, 0 }, { 0, 3, 0 }, { 0, 4, 0 }, { 0, 8, 0 },
                     { 0, 9, 0 }, { 0, 10, 0 }, { 0, 11, 0 }, { 0, 12, 0 }, { 1, 0, 0 }, { 1, 1, 0 }, { 1, 2, 0 },
@@ -69,9 +29,8 @@ public class Main {
                     { 1, 0, 3 }, { 1, 12, 3 }, { 5, 0, 3 }, { 5, 12, 3 }, { 6, 0, 3 }, { 6, 1, 3 }, { 6, 11, 3 },
                     { 6, 12, 3 }, { 0, 0, 4 }, { 0, 12, 4 }, { 6, 0, 4 }, { 6, 12, 4 }
             };
-            EspaceDeJeu plateauJeu = new EspaceDeJeu(7, 13, 5);
-            ArrayList<Tuile> tuiles = JeuMahjongg.getTuiles();
-            plateauJeu.placementTuiles(disp, tuiles); // repartition aléatoire des tuiles dans l'espace de jeu
+            EspaceDeJeu plateauJeu = new EspaceDeJeu(7, 13, 5, ensembleTuiles);
+            plateauJeu.placementTuiles(disp); // repartition aléatoire des tuiles dans l'espace de jeu
             Tuile tuile1 = new Tuile("K", 9);
             Tuile tuile2 = new Tuile("K", 9);
             System.out.println(plateauJeu.debugger());

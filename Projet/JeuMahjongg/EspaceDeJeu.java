@@ -6,13 +6,15 @@ public class EspaceDeJeu {
     private int colonnes;
     private int hauteur;
     private ArrayList<Tuile>[][] espaceDeJeu; // Tableau en 2 dimensions contenant des listes (piles) de tuiles
+    private JeuMahjongg jeuMahjongg;
 
     // Constructeur
     @SuppressWarnings("unchecked")
-    public EspaceDeJeu(int lignes, int colonnes, int hauteur) {
+    public EspaceDeJeu(int lignes, int colonnes, int hauteur, JeuMahjongg jeuMahjongg) {
         this.lignes = lignes;
         this.colonnes = colonnes;
         this.hauteur = hauteur;
+        this.jeuMahjongg = jeuMahjongg;
 
         // Création d'un tableau de listes pour représenter les piles dans l'espace de jeu
         espaceDeJeu = (ArrayList<Tuile>[][]) new ArrayList[lignes][colonnes];
@@ -23,19 +25,12 @@ public class EspaceDeJeu {
             }
         }
 
-        // initialise les cases de l'espace de jeu
-        for (int i = 0; i < lignes; i++) {
-            for (int j = 0; j < colonnes; j++) {
-                for (int k = 0; k < hauteur; k++) {
-                    espaceDeJeu[i][j].add(null); // permet de laisser "des cases vides pleines"et de les representer graphiquement
-                }
-            }
-        }
+        
     }
 
     // Place les tuiles dans l'espace de jeu selon les coordonnées données
-    public void placementTuiles(int[][] dispositions, ArrayList<Tuile> tuiles) throws Exception {
-        if (tuiles.size() != dispositions.length) {
+    public void placementTuiles(int[][] dispositions) throws Exception {
+        if (JeuMahjongg.tuiles.size() != dispositions.length) {
             throw new Exception("Le nombre de tuiles n'est pas egale au nombre de coordonées des tuiles");
         }
 
@@ -48,8 +43,8 @@ public class EspaceDeJeu {
             int pile = dispositions[i][2];
 
             if (ligne >= 0 && ligne < lignes && colonne >= 0 && colonne < colonnes) {
-                espaceDeJeu[ligne][colonne].set(pile, tuileSelectionnee);
-                tuiles.remove(tuileSelectionnee); // retire la tuile
+                espaceDeJeu[ligne][colonne].add(tuileSelectionnee);
+                JeuMahjongg.tuiles.remove(tuileSelectionnee); // retire la tuile
             } else {
                 throw new Exception("Les coordonnées de la tuile sont en dehors des limites de l'espace de jeu");
             }
@@ -66,8 +61,8 @@ public class EspaceDeJeu {
             if (estSelectionnable(t1) && estSelectionnable(t2)) {
                 int[] coord1 = t1.getCoordonnees();
                 int[] coord2 = t2.getCoordonnees();
-                espaceDeJeu[coord1[0]][coord1[1]].set(coord1[2], null);
-                espaceDeJeu[coord2[0]][coord2[1]].set(coord2[2], null);
+                espaceDeJeu[coord1[0]][coord1[1]].remove(t1);
+                espaceDeJeu[coord2[0]][coord2[1]].remove(t2);
                 return true;
             }
         }
@@ -104,38 +99,37 @@ public class EspaceDeJeu {
                 }
             }
         }
-
         // Retourne les tuiles entrées en parametres trouvés dans le plateau de jeu
         ArrayList<Tuile> tab = new ArrayList<>();
         tab.add(t1);
         tab.add(t2);
-        return tab;
+        return new ArrayList<>(tab); // Renvoi une copie pour eviter les modifications
     }
 
-    // Vérifie si une tuile est sélectionnable : aucune tuile au-dessus ou sur les côtés à la même hauteur
-    public boolean estSelectionnable(Tuile tuile) {
+     // Vérifie si une tuile est sélectionnable : aucune tuile au-dessus ou sur les côtés à la même hauteur
+     public boolean estSelectionnable(Tuile tuile) {
         int[] coordonnees = tuile.getCoordonnees();
         int ligne = coordonnees[0];
         int colonne = coordonnees[1];
         int hauteur = coordonnees[2];
-
-        // Verfie si une tuile est au-dessus
-        if (hauteur < espaceDeJeu[ligne][colonne].size() - 1) {
-            if (espaceDeJeu[ligne][colonne].get(hauteur + 1) != null) {
-                return false;
-            }
-        }
-
-        // Verifie si il y a des tuiles sur les cotés à la même hauteur
-        if ((colonne > 0 && espaceDeJeu[ligne][colonne - 1].size() >= hauteur
-            && espaceDeJeu[ligne][colonne - 1].get(hauteur) != null)
-            && (colonne > colonne - 1 && espaceDeJeu[ligne][colonne + 1].size() >= hauteur
-            && espaceDeJeu[ligne][colonne + 1].get(hauteur) != null)) {
+    
+        // Vérifie si la case contient des tuiles avant d'y accéder
+        if (espaceDeJeu[ligne][colonne].isEmpty() || hauteur < espaceDeJeu[ligne][colonne].size() - 1) {
             return false;
         }
+    
+        // Vérifie s'il y a des tuiles sur les côtés à la même hauteur
+        if ((colonne > 0 && !espaceDeJeu[ligne][colonne - 1].isEmpty() 
+            && espaceDeJeu[ligne][colonne - 1].size() >= hauteur)
+            || (colonne > colonnes - 1 && !espaceDeJeu[ligne][colonne + 1].isEmpty()
+            && espaceDeJeu[ligne][colonne + 1].size() >= hauteur)) {
+            return false;
+        }
+    
         return true;
     }
-
+    
+    
     // Affiche le plateau de jeu avec la profondeur et les coordonnées
     public String debugger() {
         StringBuilder ret = new StringBuilder();
@@ -178,35 +172,33 @@ public class EspaceDeJeu {
             ret.append("\n");
         }
 
-        for (int i = 0; i < espaceDeJeu.length; i++) {
-            ret.append(i).append(" "); // Numéros de lignes
-            for (int j = 0; j < espaceDeJeu[i].length; j++) {
+        // Affichage des lignes avec les tuiles
+    for (int i = 0; i < espaceDeJeu.length; i++) {
+        ret.append(i).append(" "); // Numéros de lignes
+        for (int j = 0; j < espaceDeJeu[i].length; j++) {
+            if (espaceDeJeu[i][j].isEmpty()) { // Vérifie si la case est vide
+                if ((j == 0) || (j == 6)||(j == 12)){
+                    ret.append("    ");
+                } else if ((j == 5)||(j > 0 && j <= 5) || (j >= 7 && j < 12)) {
+                    ret.append("   ");
+                }
+            } else {
+                // Affichage des tuiles présentes dans la pile
                 for (int k = espaceDeJeu[i][j].size() - 1; k >= 0; k--) {
                     Tuile tuileActuelle = espaceDeJeu[i][j].get(k);
-                    if (tuileActuelle == null) {
-                        if (espaceDeJeu[i][j].get(0) == null) { // adapte la taille des cases vides sur l'espace de jeu
-                            if ((j == 0) || (j == 6)||(j == 12)){
-                                ret.append("    ");
-                                break;
-                            } else if ((j == 5)||(j > 0 && j <= 5) || (j >= 7 && j < 12)) {
-                                ret.append("   ");
-                                break;
-                            }
-                        }
-                    } else { // adapte les <> en fonction de la position de la tuile sur l'espace de jeu
-                        if ((j == 0) || (j == 6) || (j == 12)) {
-                            ret.append("<").append(espaceDeJeu[i][j].get(k)).append(">");
-                            break;
-                        } else if ((j > 0 && j < 5) || (j == 7)) {
-                            ret.append(espaceDeJeu[i][j].get(k)).append(">");
-                            break;
-                        } else if ((j == 5) || (j > 7 && j < 12)) {
-                            ret.append("<").append(espaceDeJeu[i][j].get(k));
-                            break;
-                        } 
-                    }
+                    if ((j == 0) || (j == 6) || (j == 12)) {
+                        ret.append("<").append(tuileActuelle).append(">");
+                        break;
+                    } else if ((j > 0 && j < 5) || (j == 7)) {
+                        ret.append(tuileActuelle).append(">");
+                        break;
+                    } else if ((j == 5) || (j > 7 && j < 12)) {
+                        ret.append("<").append(tuileActuelle);
+                        break;
+                    } 
                 }
             }
+        }
             ret.append("\n");
         }
         return ret.toString();
