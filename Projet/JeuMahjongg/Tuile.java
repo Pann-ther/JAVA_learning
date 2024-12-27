@@ -11,7 +11,6 @@ public class Tuile {
     
     // Constructeur
     public Tuile(String categorie, int numero){
-        coordonnees = new int[3];
         if(!estDansCategorie(categorie, categoriesValides)){
             throw new IllegalArgumentException("La catégorie "+categorie+" n'existe pas");
         }else if (numero < 1 || numero > 9) {
@@ -22,6 +21,8 @@ public class Tuile {
         
         this.categorie = categorie;
         this.numero = numero;
+
+        coordonnees = new int[3];
     }
 
     // Verifie si categorie fait partie du tableau categoriesValides
@@ -52,11 +53,9 @@ public class Tuile {
         return coordonnees;
     }
 
+
     // Setter
     public void setCoordonnees(int[] coordonnees) {
-        if (coordonnees.length != 3) {
-            throw new IllegalArgumentException("Le format des coordonnées n'est pas correct");
-        }
         this.coordonnees = coordonnees;
     }
 

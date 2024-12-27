@@ -1,14 +1,15 @@
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Random;
 
 public class JeuMahjongg {
     // Attribut du jeu du Mahjong
-    protected static Random random = new Random(); // Pour le tirage aléatoire des tuiles
-    protected static ArrayList<Tuile> tuiles; // Pour stocker les 144 tuiles apres l'initialisation de JeuMahjongg
+    private Random random = new Random(); // Pour le tirage aléatoire des tuiles
+    private ArrayList<Tuile> tuiles; // Pour stocker les 144 tuiles apres l'initialisation de JeuMahjongg
 
     // Constructeur
     public JeuMahjongg() {
-        tuiles = new ArrayList<Tuile>();
+        tuiles = new ArrayList<>();
         // boucle pour initialiser automatiquement les 144 tuiles
         for (int i = 0; i < Tuile.getCategoriesValides().length; i++) {
             if (i < 3) {
@@ -25,27 +26,47 @@ public class JeuMahjongg {
         }
     }
 
-    // Getter
-    public static ArrayList<Tuile> getTuiles() {
-        return tuiles;
-    }
-
     // Permet de tirer une tuile aleatoirement et de la retirer de l'ensemble
-    public static Tuile tirerTuile() {
+    public Tuile tirerTuile() {
         int index = random.nextInt(tuiles.size());
         Tuile tuile = tuiles.get(index);
         tuiles.remove(tuile);
         return tuile;
     }
 
-    // Verifie combien y'a t'ils de tuiles restantes en jeu
-    public int tuilesRestantes(){
+    // Tire aleatoire une tuile de l'ensemble
+    public Tuile tirageAleatoire() {
+        int index = random.nextInt(tuiles.size());
+        return tuiles.get(index);
+    }
+
+    // Supprime une tuile
+    public void supprimer(Tuile t){
+        tuiles.remove(t);
+    }
+
+    // Renvoie la taille de l'ensemble
+    public int size(){
+        return tuiles.size();
+    } 
+
+    // Renvoie la tuile à l'index donné
+    public Tuile get(int index){
+        return tuiles.get(index);
+    }
+    // Melange les tuiles
+    public void melangerTuiles() {
+        Collections.shuffle(tuiles); // Mélange les tuiles de manière aléatoire
+    }
+
+    // Verifie combien y'a t'ils de tuiles restantes en dans l'ensemble
+    public int tuilesRestantes() {
         return tuiles.size();
     }
 
-    // Verifie si le plateau de tuiles est vide
-    public boolean estVide(){
-        if(tuiles.isEmpty()){
+    // Verifie si l'ensemble de tuiles est vide
+    public boolean estVide() {
+        if (tuiles.isEmpty()) {
             return true;
         }
         return false;
@@ -64,5 +85,4 @@ public class JeuMahjongg {
         }
         return liste;
     }
-    
 }

@@ -1,12 +1,10 @@
-import java.util.ArrayList;
+import java.util.Random;
 
 public class Main {
     public static void main(String[] args) {
-
-        // Test initialisation de l'espace de jeu et utilisation de la methode pour enlever du plateau 2 tuiles si se sont une paire d'instances differentes
         try {
-            JeuMahjongg ensembleTuiles = new JeuMahjongg(); // Initialise le plateau de jeu avec les 144 tuiles
-            int[][] disp = { // coordonnées du positionnement des tuiles dans l'espace de jeu 
+            JeuMahjongg ensembleTuiles = new JeuMahjongg(); // Initialise l'ensemble de tuiles avec les 144 tuiles
+            int[][] disp = { // disposition des tuiles dans le plateau de jeu
                     { 0, 0, 0 }, { 0, 1, 0 }, { 0, 2, 0 }, { 0, 3, 0 }, { 0, 4, 0 }, { 0, 8, 0 },
                     { 0, 9, 0 }, { 0, 10, 0 }, { 0, 11, 0 }, { 0, 12, 0 }, { 1, 0, 0 }, { 1, 1, 0 }, { 1, 2, 0 },
                     { 1, 3, 0 }, { 1, 5, 0 }, { 1, 6, 0 }, { 1, 7, 0 }, { 1, 9, 0 }, { 1, 10, 0 }, { 1, 11, 0 },
@@ -29,16 +27,19 @@ public class Main {
                     { 1, 0, 3 }, { 1, 12, 3 }, { 5, 0, 3 }, { 5, 12, 3 }, { 6, 0, 3 }, { 6, 1, 3 }, { 6, 11, 3 },
                     { 6, 12, 3 }, { 0, 0, 4 }, { 0, 12, 4 }, { 6, 0, 4 }, { 6, 12, 4 }
             };
-            EspaceDeJeu plateauJeu = new EspaceDeJeu(7, 13, 5, ensembleTuiles);
-            plateauJeu.placementTuiles(disp); // repartition aléatoire des tuiles dans l'espace de jeu
-            Tuile tuile1 = new Tuile("K", 9);
-            Tuile tuile2 = new Tuile("K", 9);
-            System.out.println(plateauJeu.debugger());
-            System.out.println(plateauJeu.toString());
-            System.out.println(plateauJeu.tirerTuiles(tuile1, tuile2));
-            System.out.println(plateauJeu.toString());
+
+            Plateau plateau = new Plateau(7, 13, disp, ensembleTuiles); // initialisation du plateau de jeu
+
+            // Simulation d'un partie qui se termine quand le tableau de jeu est vide
+            do{
+                System.out.println(ensembleTuiles.tuilesRestantes());
+                System.out.println(plateau.toString());
+                System.out.println(plateau.tirerTuiles());
+            } while (!ensembleTuiles.estVide());
+            System.out.println("Vous avez gagné la partie");
         } catch (Exception e) {
             System.out.println(e.getMessage());
         }
+
     }
 }
