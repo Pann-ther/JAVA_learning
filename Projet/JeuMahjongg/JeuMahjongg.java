@@ -34,30 +34,10 @@ public class JeuMahjongg {
         return tuile;
     }
 
-    // Tire aleatoire une tuile de l'ensemble
-    public Tuile tirageAleatoire() {
-        int index = random.nextInt(tuiles.size());
-        return tuiles.get(index);
-    }
-
-    // Supprime une tuile
-    public void supprimer(Tuile t){
-        tuiles.remove(t);
-    }
-
     // Renvoie la taille de l'ensemble
     public int size(){
         return tuiles.size();
     } 
-
-    // Renvoie la tuile à l'index donné
-    public Tuile get(int index){
-        return tuiles.get(index);
-    }
-    // Melange les tuiles
-    public void melangerTuiles() {
-        Collections.shuffle(tuiles); // Mélange les tuiles de manière aléatoire
-    }
 
     // Verifie combien y'a t'ils de tuiles restantes en dans l'ensemble
     public int tuilesRestantes() {

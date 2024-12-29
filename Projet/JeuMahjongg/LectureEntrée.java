@@ -37,5 +37,11 @@ public class LectureEntrée {
         return input;
     }
 
-   
+    // Demande à l'utilisateur de rentrer les coordonnées de la tuile qu'il à choisi
+    public static int[] coordTuile(String msg) {
+        int[] coord = new int[2];
+        coord[0] = lireInt("Entrez la ligne où se situe la " + msg + " tuile selectionné: ");
+        coord[1] = lireInt("Entrez la colonne où se situe la " + msg + " tuile selectionné: ");
+        return coord;
+    }
 }

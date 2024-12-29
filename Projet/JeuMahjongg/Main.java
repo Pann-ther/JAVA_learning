@@ -32,10 +32,12 @@ public class Main {
 
             // Simulation d'un partie qui se termine quand le tableau de jeu est vide
             do{
-                System.out.println(ensembleTuiles.tuilesRestantes());
+                System.out.println(plateau.tuilesRestantes());
                 System.out.println(plateau.toString());
-                System.out.println(plateau.tirerTuiles());
-            } while (!ensembleTuiles.estVide());
+                int[] coordT1 = LectureEntrée.coordTuile("première");
+                int[] coordT2 = LectureEntrée.coordTuile("deuxième");
+                System.out.println(plateau.tirerTuiles(coordT1,coordT2));
+            } while (!plateau.estVide());
             System.out.println("Vous avez gagné la partie");
         } catch (Exception e) {
             System.out.println(e.getMessage());

@@ -20,7 +20,6 @@ public class Plateau {
                 plateau[l][c] = new ArrayList<>();
             }
         }
-        ensembleTuiles.melangerTuiles(); // Melange les tuiles de l'ensemble avant des les placer dans le plateau
         initialiserPlateau(disposition, ensembleTuiles); // Initialise le tableau en placant les tuiles aleatoirement choisis au coordonnées indiqués
     }
 
@@ -29,81 +28,35 @@ public class Plateau {
             throw new Exception("Le nombre de coordonées ne corresponds pas au nombre de tuiles");
         }
 
-        for (int i = 0; i < ensembleTuiles.size(); i++) {
-            Tuile tuiletiree = ensembleTuiles.get(i);
-            tuiletiree.setCoordonnees(disposition[i]);
+        int tailleEnsemble = ensembleTuiles.size(); // Taille initiale de l'ensemble
+        for (int i = 0; i < tailleEnsemble; i++) {
+            Tuile tuiletiree = ensembleTuiles.tirerTuile();
             int ligne = disposition[i][0];
             int colonne = disposition[i][1];
             if (ligne >= 0 && ligne < lignes && colonne >= 0 && colonne < colonnes) {
                 plateau[ligne][colonne].add(tuiletiree);
+                tuiletiree.setCoordonnees(disposition[i]);
             } else {
                 throw new Exception("Les coordonées de la tuile sont hors de l'espace de jeu");
             }
         }
     }
 
-    // Retire les tuiles de l'ensemble et du plateau de jeu uniquement si 2 tuiles ont le meme dessin et sont d'instances différentes
-    public boolean tirerTuiles() {
-        // Entrées de l'utilisateur
-        
-        Tuile tuile1Str ;
-        int[] coordTuile1Str;
-        Tuile tuile2Str;
-        int[] coordTuile2Str ;
-        do{
-             tuile1Str = choixTuile("première");
-             coordTuile1Str = coordTuile("première");
-             tuile2Str = choixTuile("deuxième");
-             coordTuile2Str = coordTuile("deuxième");
-        } while (tuile1Str == null && tuile2Str == null);
-        
+    // Retire les tuiles du plateau de jeu uniquement si 2 tuiles ont le meme dessin et sont d'instances différentes
+    public boolean tirerTuiles(int[] coordT1, int[] coordT2 ) {
         // Récupération des tuiles sélectionnées à partir du plateau de jeu
-        Tuile t1 = tuilePlateau(coordTuile1Str, tuile1Str);
-        Tuile t2 = tuilePlateau(coordTuile2Str, tuile2Str);
+        Tuile t1 = plateau[coordT1[0]][coordT1[1]].get(plateau[coordT1[0]][coordT1[1]].size()-1);
+        Tuile t2 = plateau[coordT2[0]][coordT2[1]].get(plateau[coordT2[0]][coordT2[1]].size()-1);
 
         if (t1.estEgale(t2)) {
             if (estSelectionnable(t1) && estSelectionnable(t2)) {
-
                 // Retirer les tuiles du plateau
-                plateau[coordTuile1Str[0]][coordTuile1Str[1]].remove(t1);
-                plateau[coordTuile2Str[0]][coordTuile2Str[1]].remove(t2);
-
-                // Retirer les tuiles de l'ensemble
-                ensembleTuiles.supprimer(t1);
-                ensembleTuiles.supprimer(t2);
+                plateau[coordT1[0]][coordT1[1]].remove(t1);
+                plateau[coordT2[0]][coordT2[1]].remove(t2);
                 return true;
             }
         }
         return false;
-    }
-
-    // Recupere la tuile choisi par l'utilisateur dans le plateau
-    public Tuile tuilePlateau(int[] coordTuile, Tuile tuile) {
-        Tuile tuileSelectionnee = null;
-        for (int i = plateau[coordTuile[0]][coordTuile[1]].size() - 1; i >= 0; i--) {
-            Tuile tuileActuelle = plateau[coordTuile[0]][coordTuile[1]].get(i);
-            if (tuileActuelle.toString().equals(tuile.toString())) {
-                tuileSelectionnee = tuileActuelle;
-            }
-        }
-        return tuileSelectionnee;
-    }
-
-    // Demande à l'utilisateur de choisir une tuile
-    public Tuile choixTuile(String msg) {
-        String tuileStr = LectureEntrée.lireString("Entrez la " + msg + " tuile selectionné: ");
-        String categorie = tuileStr.substring(0, 1);
-        int numero = Integer.parseInt(tuileStr.substring(1));
-        Tuile tuile = new Tuile(categorie, numero);
-        return tuile;
-    }
-
-    // Demande à l'utilisateur de rentrer les coordonnées de la tuile qu'il à choisi
-    public int[] coordTuile(String msg) {
-        int[] coord = new int[2];
-        coord[0] = LectureEntrée.lireInt("Entrez la ligne où se situe la " + msg + " tuile selectionné: ");
-        coord[1] = LectureEntrée.lireInt("Entrez la colonne où se situe la " + msg + " tuile selectionné: ");
-        return coord;
     }
 
     // Verifie si les tuiles choisi peuvent etre joué et retirer du plateau
@@ -127,6 +80,35 @@ public class Plateau {
             return false; 
         }
         return true; // La tuile est sélectionnable
+    }
+
+    // Verifie combien y'a t'ils de tuiles restantes en dans le plateau
+    public int tuilesRestantes() {
+        int nbTuilesRestantes = 0;
+        for(int i=0; i<plateau.length; i++){
+            for(int j=0; j<plateau[i].length; j++){
+                for(int k=plateau[i][j].size()-1; k>=0; k--){
+                    if (plateau[i][j].get(k) != null) {
+                        nbTuilesRestantes ++;
+                    }
+                }
+            }
+        }
+        return nbTuilesRestantes;
+    }
+
+    // Verifie si le plateau est vide
+    public boolean estVide() {
+        for(int i=0; i<plateau.length; i++){
+            for(int j=0; j<plateau[i].length; j++){
+                for(int k=plateau[i][j].size()-1; k>=0; k--){
+                    if (plateau[i][j].get(k) != null) {
+                        return false;
+                    }
+                }
+            }
+        }
+        return true;
     }
 
     // Affiche les tuiles avec leur emplacement sur le plateau pour debugger
