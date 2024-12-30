@@ -4,13 +4,12 @@ public class Plateau {
     private int lignes;
     private int colonnes;
     private ArrayList<Tuile>[][] plateau;
-    private JeuMahjongg ensembleTuiles;
+    private int nbTuilesRestantes;
 
     @SuppressWarnings("unchecked")
     public Plateau(int lignes, int colonnes, int[][] disposition, JeuMahjongg ensembleTuiles) throws Exception {
         this.lignes = lignes;
         this.colonnes = colonnes;
-        this.ensembleTuiles = ensembleTuiles;
 
         plateau = new ArrayList[lignes][colonnes]; // initialisation du tableau
 
@@ -28,6 +27,7 @@ public class Plateau {
             throw new Exception("Le nombre de coordonées ne corresponds pas au nombre de tuiles");
         }
 
+        nbTuilesRestantes = ensembleTuiles.size();
         int tailleEnsemble = ensembleTuiles.size(); // Taille initiale de l'ensemble
         for (int i = 0; i < tailleEnsemble; i++) {
             Tuile tuiletiree = ensembleTuiles.tirerTuile();
@@ -53,6 +53,7 @@ public class Plateau {
                 // Retirer les tuiles du plateau
                 plateau[coordT1[0]][coordT1[1]].remove(t1);
                 plateau[coordT2[0]][coordT2[1]].remove(t2);
+                nbTuilesRestantes -=  2;
                 return true;
             }
         }
@@ -84,31 +85,15 @@ public class Plateau {
 
     // Verifie combien y'a t'ils de tuiles restantes en dans le plateau
     public int tuilesRestantes() {
-        int nbTuilesRestantes = 0;
-        for(int i=0; i<plateau.length; i++){
-            for(int j=0; j<plateau[i].length; j++){
-                for(int k=plateau[i][j].size()-1; k>=0; k--){
-                    if (plateau[i][j].get(k) != null) {
-                        nbTuilesRestantes ++;
-                    }
-                }
-            }
-        }
         return nbTuilesRestantes;
     }
 
     // Verifie si le plateau est vide
     public boolean estVide() {
-        for(int i=0; i<plateau.length; i++){
-            for(int j=0; j<plateau[i].length; j++){
-                for(int k=plateau[i][j].size()-1; k>=0; k--){
-                    if (plateau[i][j].get(k) != null) {
-                        return false;
-                    }
-                }
-            }
+        if (nbTuilesRestantes == 0) {
+            return true;
         }
-        return true;
+        return false;
     }
 
     // Affiche les tuiles avec leur emplacement sur le plateau pour debugger

@@ -13,9 +13,9 @@ public class JeuMahjongg {
         // boucle pour initialiser automatiquement les 144 tuiles
         for (int i = 0; i < Tuile.getCategoriesValides().length; i++) {
             if (i < 3) {
-                for (int j = 0; j < 9; j++) {
+                for (int j = 1; j <= 9; j++) {
                     for (int k = 0; k < 4; k++) {
-                        tuiles.add(new Tuile(Tuile.getCategoriesValides()[i], j + 1));
+                        tuiles.add(new Tuile(Tuile.getCategoriesValides()[i], j));
                     }
                 }
             } else {
