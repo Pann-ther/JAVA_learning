@@ -1,7 +1,33 @@
-import java.util.Random;
-
 public class Main {
     public static void main(String[] args) {
+        // Test implementation operations
+        try {
+            Tuile t1 = new TuileNumerique("Cercle", 1);
+            Tuile t2 = new TuileNumerique("Cercle", 1);
+            Tuile t3 = t1;
+            Tuile t4 = new TuileHonneur("Vent","Est");
+            Tuile t5 = new TuileHonneur("Vent","ESt");
+            Tuile t6 = new TuileBonus("Fleur","Bambou");
+            Tuile t7 = new TuileBonus("Fleur","Orchidee");
+            System.out.println("Afficher les informations de la tuile: "+t6.toString());
+            System.out.println("D'instances differentes");
+            System.out.println(t1.toString()+" peut etre retiré avec "+t2.toString()+" : "+t1.retirerAvec(t2));
+            System.out.println("D'une meme instance");
+            System.out.println(t1.toString()+" peut etre retiré avec "+t3.toString()+" : "+t1.retirerAvec(t3));
+            System.out.println(t4.toString()+" peut etre retiré avec "+t7.toString()+" : "+t4.retirerAvec(t7));
+            System.out.println(t6.toString()+" peut etre retiré avec "+t7.toString()+" : "+t6.retirerAvec(t7));
+            System.out.println("Acces au images des tuiles");
+            System.out.println(t6.getImage());
+            System.out.println(t1.getImage());
+            System.out.println(t4.getImage());
+            
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
+        System.out.println();
+        System.out.println();
+
+        // Test du jeu: simulation d'une partie qui se termine quand le tableau de jeu est vide
         try {
             JeuMahjongg ensembleTuiles = new JeuMahjongg(); // Initialise l'ensemble de tuiles avec les 144 tuiles
             int[][] disp = { // disposition des tuiles dans le plateau de jeu
@@ -30,18 +56,23 @@ public class Main {
 
             Plateau plateau = new Plateau(7, 13, disp, ensembleTuiles); // initialisation du plateau de jeu
 
-            // Simulation d'un partie qui se termine quand le tableau de jeu est vide
+            int nbTour = 0;
+            System.out.println("Le but du jeu est de selectonner par paire les tuiles identiques afin de les retirer du plateau");
+            System.out.println("La partie sera terminer lorsque le plateau sera vide");
+            System.out.println();
             do{
-                System.out.println(plateau.tuilesRestantes());
+                System.out.print("Tuiles restantes: "+plateau.tuilesRestantes()+"   Tour de jeu: "+ nbTour+ "\n"); // Compteur tuiles restantes et tour de jeu
+                System.out.println(); 
                 System.out.println(plateau.toString());
                 int[] coordT1 = LectureEntrée.coordTuile("première");
                 int[] coordT2 = LectureEntrée.coordTuile("deuxième");
                 System.out.println(plateau.tirerTuiles(coordT1,coordT2));
+                System.out.println();
+                nbTour ++;
             } while (!plateau.estVide());
             System.out.println("Vous avez gagné la partie");
         } catch (Exception e) {
             System.out.println(e.getMessage());
         }
-
     }
 }

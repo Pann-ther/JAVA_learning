@@ -24,7 +24,7 @@ public class Plateau {
 
     public void initialiserPlateau(int[][] disposition, JeuMahjongg ensembleTuiles) throws Exception {
         if (ensembleTuiles.size() != disposition.length) {
-            throw new Exception("Le nombre de coordonées ne corresponds pas au nombre de tuiles");
+            throw new Exception("Le nombre de coordonées ne corresponds pas au nombre de tuiles: "+ensembleTuiles.size());
         }
 
         nbTuilesRestantes = ensembleTuiles.size();
@@ -48,7 +48,7 @@ public class Plateau {
         Tuile t1 = plateau[coordT1[0]][coordT1[1]].get(plateau[coordT1[0]][coordT1[1]].size()-1);
         Tuile t2 = plateau[coordT2[0]][coordT2[1]].get(plateau[coordT2[0]][coordT2[1]].size()-1);
 
-        if (t1.estEgale(t2)) {
+        if (t1.retirerAvec(t2)) {
             if (estSelectionnable(t1) && estSelectionnable(t2)) {
                 // Retirer les tuiles du plateau
                 plateau[coordT1[0]][coordT1[1]].remove(t1);

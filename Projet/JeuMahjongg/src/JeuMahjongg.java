@@ -12,15 +12,31 @@ public class JeuMahjongg {
         tuiles = new ArrayList<>();
         // boucle pour initialiser automatiquement les 144 tuiles
         for (int i = 0; i < Tuile.getCategoriesValides().length; i++) {
-            if (i < 3) {
+            if (i < 3) { // Categorie CERCLE, BAMBOU, CARACTERE
                 for (int j = 1; j <= 9; j++) {
                     for (int k = 0; k < 4; k++) {
-                        tuiles.add(new Tuile(Tuile.getCategoriesValides()[i], j));
+                        tuiles.add(new TuileNumerique(Tuile.getCategoriesValides()[i], j));
                     }
                 }
-            } else {
-                for (int k = 0; k < 4; k++) {
-                    tuiles.add(new Tuile(Tuile.getCategoriesValides()[i], 1));
+            } else if (i < 4) { // Categorie VENT
+                for (int j = 0; j < 4; j++) {
+                    for (int k = 0; k < 4; k++) {
+                        tuiles.add(new TuileHonneur(Tuile.getCategoriesValides()[i], Tuile.getDessinsValides()[j]));
+                    }
+                }
+            } else if (i < 5) { // Categorie DRAGON
+                for (int j = 4; j < 7; j++) {
+                    for (int k = 0; k < 4; k++) {
+                        tuiles.add(new TuileHonneur(Tuile.getCategoriesValides()[i], Tuile.getDessinsValides()[j]));
+                    }
+                } 
+            } else if (i< 6) { // Categorie FLEUR
+                for (int j = 7; j < 11; j++) {
+                    tuiles.add(new TuileBonus(Tuile.getCategoriesValides()[i], Tuile.getDessinsValides()[j]));
+                }
+            } else { // Categorie SAISON
+                for (int j = 11; j < Tuile.getDessinsValides().length; j++) {
+                    tuiles.add(new TuileBonus(Tuile.getCategoriesValides()[i], Tuile.getDessinsValides()[j]));
                 }
             }
         }
@@ -35,9 +51,9 @@ public class JeuMahjongg {
     }
 
     // Renvoie la taille de l'ensemble
-    public int size(){
+    public int size() {
         return tuiles.size();
-    } 
+    }
 
     // Verifie combien y'a t'ils de tuiles restantes en dans l'ensemble
     public int tuilesRestantes() {
