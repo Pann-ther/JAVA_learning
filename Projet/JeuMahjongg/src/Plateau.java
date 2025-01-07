@@ -13,18 +13,21 @@ public class Plateau {
 
         plateau = new ArrayList[lignes][colonnes]; // initialisation du tableau
 
-        // Initialise chaque cases avec un ArrayList pour representer les piles de tuiles
+        // Initialise chaque cases avec un ArrayList pour representer les piles de
+        // tuiles
         for (int l = 0; l < plateau.length; l++) {
             for (int c = 0; c < plateau[l].length; c++) {
                 plateau[l][c] = new ArrayList<>();
             }
         }
-        initialiserPlateau(disposition, ensembleTuiles); // Initialise le tableau en placant les tuiles aleatoirement choisis au coordonnées indiqués
+        initialiserPlateau(disposition, ensembleTuiles); // Initialise le tableau en placant les tuiles aleatoirement
+                                                         // choisis au coordonnées indiqués
     }
 
     public void initialiserPlateau(int[][] disposition, JeuMahjongg ensembleTuiles) throws Exception {
         if (ensembleTuiles.size() != disposition.length) {
-            throw new Exception("Le nombre de coordonées ne corresponds pas au nombre de tuiles: "+ensembleTuiles.size());
+            throw new Exception(
+                    "Le nombre de coordonées ne corresponds pas au nombre de tuiles: " + ensembleTuiles.size());
         }
 
         nbTuilesRestantes = ensembleTuiles.size();
@@ -42,18 +45,19 @@ public class Plateau {
         }
     }
 
-    // Retire les tuiles du plateau de jeu uniquement si 2 tuiles ont le meme dessin et sont d'instances différentes
-    public boolean tirerTuiles(int[] coordT1, int[] coordT2 ) {
+    // Retire les tuiles du plateau de jeu uniquement si 2 tuiles ont le meme dessin
+    // et sont d'instances différentes
+    public boolean tirerTuiles(int[] coordT1, int[] coordT2) {
         // Récupération des tuiles sélectionnées à partir du plateau de jeu
-        Tuile t1 = plateau[coordT1[0]][coordT1[1]].get(plateau[coordT1[0]][coordT1[1]].size()-1);
-        Tuile t2 = plateau[coordT2[0]][coordT2[1]].get(plateau[coordT2[0]][coordT2[1]].size()-1);
+        Tuile t1 = plateau[coordT1[0]][coordT1[1]].get(plateau[coordT1[0]][coordT1[1]].size() - 1);
+        Tuile t2 = plateau[coordT2[0]][coordT2[1]].get(plateau[coordT2[0]][coordT2[1]].size() - 1);
 
         if (t1.retirerAvec(t2)) {
             if (estSelectionnable(t1) && estSelectionnable(t2)) {
                 // Retirer les tuiles du plateau
                 plateau[coordT1[0]][coordT1[1]].remove(t1);
                 plateau[coordT2[0]][coordT2[1]].remove(t2);
-                nbTuilesRestantes -=  2;
+                nbTuilesRestantes -= 2;
                 return true;
             }
         }
@@ -69,16 +73,19 @@ public class Plateau {
         int ligne = coord[0];
         int colonne = coord[1];
         int hauteur = coord[2];
-        
+
         // Vérifie si la pile est vide ou si la tuile n'est pas au sommet de la pile
         if (plateau[ligne][colonne].isEmpty() || plateau[ligne][colonne].size() - 1 != hauteur) {
             return false;
         }
-        
-        // Vérifie la tuile est bloqué par d'autres tuiles à droite et à gauche sur la même hauteur
-        if ((colonne > 0 && !plateau[ligne][colonne -1].isEmpty() && plateau[ligne][colonne - 1].size()-1 >= hauteur) &&
-            (colonne < colonnes - 1 && !plateau[ligne][colonne + 1].isEmpty() && plateau[ligne][colonne + 1].size()-1 >= hauteur)) {
-            return false; 
+
+        // Vérifie la tuile est bloqué par d'autres tuiles à droite et à gauche sur la
+        // même hauteur
+        if ((colonne > 0 && !plateau[ligne][colonne - 1].isEmpty() && plateau[ligne][colonne - 1].size() - 1 >= hauteur)
+                &&
+                (colonne < colonnes - 1 && !plateau[ligne][colonne + 1].isEmpty()
+                        && plateau[ligne][colonne + 1].size() - 1 >= hauteur)) {
+            return false;
         }
         return true; // La tuile est sélectionnable
     }
@@ -117,7 +124,8 @@ public class Plateau {
         return ret.toString();
     }
 
-    // Affiche le plateau de jeu (du point de vue utilisateur) avec uniqument les tuiles au sommet de chaque pile
+    // Affiche le plateau de jeu (du point de vue utilisateur) avec uniqument les
+    // tuiles au sommet de chaque pile
     public String toString() {
         StringBuilder ret = new StringBuilder();
 

@@ -1,11 +1,6 @@
 import javax.swing.ImageIcon;
 
 public abstract class Tuile {
-    protected static final String[] categoriesValides = { "CERCLE", "BAMBOU", "CARACTERE", "VENT", "DRAGON", "FLEUR",
-            "SAISON" };
-    protected static final String[] dessinsValides = { "SUD", "NORD", "OUEST", "EST", "VERT", "ROUGE", "BLANC",
-            "PRUNIER", "ORCHIDEE", "CHRYSANTHEME", "BAMBOU", "PRINTEMPS", "ETE",
-            "AUTOMNE", "HIVER" };
     protected String categorie;
     protected ImageIcon image;
     private int[] coordonnees;
@@ -14,20 +9,10 @@ public abstract class Tuile {
         coordonnees = new int[3];
     }
 
-    // Verifie si categorie fait partie du tableau categoriesValides
-    public boolean estDansCategorie(String categorie, String[] tab) {
-        for (String c : tab) {
-            if (c.equalsIgnoreCase(categorie)) {
-                return true;
-            }
-        }
-        return false;
-    }
-
-    // Verifie si dessin fait partie du tableau dessinsValides
-    public boolean estDansDessin(String dessin, String[] tab) {
-        for (String d : tab) {
-            if (d.equalsIgnoreCase(dessin)) {
+    // Verifie si l'entrée fait partie des tableaux d'entrées valides
+    public boolean estDansListe(String entree, String[] tab) {
+        for (String t : tab) {
+            if (t.equalsIgnoreCase(entree)) {
                 return true;
             }
         }
@@ -42,14 +27,6 @@ public abstract class Tuile {
 
     public String getCategorie() {
         return categorie;
-    }
-
-    public static String[] getCategoriesValides() {
-        return categoriesValides;
-    }
-
-    public static String[] getDessinsValides() {
-        return dessinsValides;
     }
 
     public ImageIcon getImage() {

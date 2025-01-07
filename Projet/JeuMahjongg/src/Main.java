@@ -1,33 +1,63 @@
+import java.util.Map;
+
 public class Main {
     public static void main(String[] args) {
-        // Test implementation operations
+        // Test : Création valide
         try {
-            Tuile t1 = new TuileNumerique("Cercle", 1);
-            Tuile t2 = new TuileNumerique("Cercle", 1);
-            Tuile t3 = t1;
-            Tuile t4 = new TuileHonneur("Vent","Est");
-            Tuile t5 = new TuileHonneur("Vent","ESt");
-            Tuile t6 = new TuileBonus("Fleur","Bambou");
-            Tuile t7 = new TuileBonus("Fleur","Orchidee");
-            System.out.println("Afficher les informations de la tuile: "+t6.toString());
-            System.out.println("D'instances differentes");
-            System.out.println(t1.toString()+" peut etre retiré avec "+t2.toString()+" : "+t1.retirerAvec(t2));
-            System.out.println("D'une meme instance");
-            System.out.println(t1.toString()+" peut etre retiré avec "+t3.toString()+" : "+t1.retirerAvec(t3));
-            System.out.println(t4.toString()+" peut etre retiré avec "+t7.toString()+" : "+t4.retirerAvec(t7));
-            System.out.println(t6.toString()+" peut etre retiré avec "+t7.toString()+" : "+t6.retirerAvec(t7));
-            System.out.println("Acces au images des tuiles");
-            System.out.println(t6.getImage());
-            System.out.println(t1.getImage());
-            System.out.println(t4.getImage());
-            
+            Tuile t1 = new TuileNumerique("BAMBOU", 5);
+            System.out.println("Test réussi : Tuile valide créée - " + t1);
         } catch (Exception e) {
-            System.out.println(e.getMessage());
+            System.out.println("Test échoué : " + e.getMessage());
         }
+
+        // Test : Catégorie invalide
+        try {
+            Tuile t2 = new TuileNumerique("FLEUR", 3);
+            System.out.println("Test échoué : Catégorie invalide n'a pas levé d'exception");
+        } catch (Exception e) {
+            System.out.println("Test réussi : Exception levée pour catégorie invalide - " + e.getMessage());
+        }
+
+        // Test : Numéro invalide
+        try {
+            Tuile t3 = new TuileNumerique("CARACTERE", 10);
+            System.out.println("Test échoué : Numéro invalide n'a pas levé d'exception");
+        } catch (Exception e) {
+            System.out.println("Test réussi : Exception levée pour numéro invalide - " + e.getMessage());
+        }
+
+        // Test implementation operations
+
+        // Tentative de retrait de 2 tuiles identiques de même instance
+        Tuile t1 = new TuileHonneur("DRAGON", "VERT");
+        Tuile t2 = t1;
+        if (t1.retirerAvec(t2)) {
+            System.out.println("Test échoué : La methode permet d'enlever 2 tuiles identiques d'une même instance");
+        } else {
+            System.out.println("Test réussi : La methode ne permet pas d'enlever 2 tuiles identiques d'une même instance");
+        }
+        // Tentative de retrait de 2 tuiles identiques d'instances differentes
+        Tuile t3 = new TuileHonneur("DRAGON", "VERT");
+        if (t1.retirerAvec(t3)) {
+            System.out.println("Test réussi : La methode permet d'enlever 2 tuiles identiques d'instances differentes");
+        } else {
+            System.out.println("Test échoué : La methode ne permet pas d'enlever 2 tuiles identiques d'instances differentes");
+        }
+        // Tentative de retrait de 2 tuiles differentes
+        Tuile t4 = new TuileBonus("FLEUR", "BAMBOU");
+        if (t1.retirerAvec(t4)) {
+            System.out.println("Test échoué : La methode permet d'enlever 2 tuiles differentes ");
+        } else {
+            System.out.println("Test réussi : La methode ne permet pas d'enlever 2 tuiles differentes");
+        }
+
+        // Afficher l'image d'une tuile
+        System.out.println("Affichage chemin de l'image: "+t1.getImage());
         System.out.println();
         System.out.println();
 
-        // Test du jeu: simulation d'une partie qui se termine quand le tableau de jeu est vide
+        // Test du jeu: simulation d'une partie qui se termine quand le tableau de jeu
+        // est vide
         try {
             JeuMahjongg ensembleTuiles = new JeuMahjongg(); // Initialise l'ensemble de tuiles avec les 144 tuiles
             int[][] disp = { // disposition des tuiles dans le plateau de jeu
@@ -60,15 +90,15 @@ public class Main {
             System.out.println("Le but du jeu est de selectonner par paire les tuiles identiques afin de les retirer du plateau");
             System.out.println("La partie sera terminer lorsque le plateau sera vide");
             System.out.println();
-            do{
-                System.out.print("Tuiles restantes: "+plateau.tuilesRestantes()+"   Tour de jeu: "+ nbTour+ "\n"); // Compteur tuiles restantes et tour de jeu
-                System.out.println(); 
+            do {
+                System.out.print("Tuiles restantes: "+plateau.tuilesRestantes()+" Tour de jeu: "+ nbTour+ "\n"); // Compteur tuiles restantes et tour de jeu
+                System.out.println();
                 System.out.println(plateau.toString());
                 int[] coordT1 = LectureEntrée.coordTuile("première");
                 int[] coordT2 = LectureEntrée.coordTuile("deuxième");
                 System.out.println(plateau.tirerTuiles(coordT1,coordT2));
                 System.out.println();
-                nbTour ++;
+                nbTour++;
             } while (!plateau.estVide());
             System.out.println("Vous avez gagné la partie");
         } catch (Exception e) {

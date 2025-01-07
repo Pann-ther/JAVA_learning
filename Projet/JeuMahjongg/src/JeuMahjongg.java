@@ -1,5 +1,4 @@
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.Random;
 
 public class JeuMahjongg {
@@ -10,35 +9,48 @@ public class JeuMahjongg {
     // Constructeur
     public JeuMahjongg() {
         tuiles = new ArrayList<>();
-        // boucle pour initialiser automatiquement les 144 tuiles
-        for (int i = 0; i < Tuile.getCategoriesValides().length; i++) {
-            if (i < 3) { // Categorie CERCLE, BAMBOU, CARACTERE
-                for (int j = 1; j <= 9; j++) {
-                    for (int k = 0; k < 4; k++) {
-                        tuiles.add(new TuileNumerique(Tuile.getCategoriesValides()[i], j));
-                    }
-                }
-            } else if (i < 4) { // Categorie VENT
-                for (int j = 0; j < 4; j++) {
-                    for (int k = 0; k < 4; k++) {
-                        tuiles.add(new TuileHonneur(Tuile.getCategoriesValides()[i], Tuile.getDessinsValides()[j]));
-                    }
-                }
-            } else if (i < 5) { // Categorie DRAGON
-                for (int j = 4; j < 7; j++) {
-                    for (int k = 0; k < 4; k++) {
-                        tuiles.add(new TuileHonneur(Tuile.getCategoriesValides()[i], Tuile.getDessinsValides()[j]));
-                    }
-                } 
-            } else if (i< 6) { // Categorie FLEUR
-                for (int j = 7; j < 11; j++) {
-                    tuiles.add(new TuileBonus(Tuile.getCategoriesValides()[i], Tuile.getDessinsValides()[j]));
-                }
-            } else { // Categorie SAISON
-                for (int j = 11; j < Tuile.getDessinsValides().length; j++) {
-                    tuiles.add(new TuileBonus(Tuile.getCategoriesValides()[i], Tuile.getDessinsValides()[j]));
+        initialiserTuiles();
+    }
+
+    //initialise les 144 tuiles
+    public void initialiserTuiles(){
+        String[] numeriques = {"CERCLE", "BAMBOU", "CARACTERE"};
+        String[] vents = {"SUD","NORD","OUEST","EST"};
+        String[] dragons = {"VERT","ROUGE","BLANC"};
+        String[] fleurs = {"PRUNIER", "ORCHIDEE", "CHRYSANTHEME", "BAMBOU"};
+        String[] saisons = {"PRINTEMPS", "ETE", "AUTOMNE", "HIVER"};
+
+        // Tuiles numériques
+        for(String numerique : numeriques){
+            for(int i=1; i<=9; i++){
+                for(int j=0; j<4; j++){
+                    tuiles.add(new TuileNumerique(numerique, i));
                 }
             }
+        }
+
+        // Tuiles Honneurs
+        // Tuiles vents
+        for(String vent : vents){
+            for(int i=0; i<4; i++){
+                tuiles.add(new TuileHonneur("VENT", vent));
+            }
+        }
+        // Tuiles dragons
+        for(String dragon:dragons){
+            for(int i=0; i<4; i++){
+                tuiles.add(new TuileHonneur("DRAGON", dragon));
+            }
+        }
+
+        // Tuiles Bonus
+        // Tuiles fleurs
+        for(String fleur:fleurs){
+            tuiles.add(new TuileBonus("FLEUR", fleur));
+        }
+        // Tuiles saisons
+        for(String saison:saisons){
+            tuiles.add(new TuileBonus("SAISON", saison));
         }
     }
 

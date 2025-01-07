@@ -1,26 +1,35 @@
 import javax.swing.ImageIcon;
 
 public class TuileBonus extends Tuile {
+    private static final String[] categoriesValides = { "FLEUR","SAISON" };
+    private static final String[] dessinsValides = { "PRUNIER", "ORCHIDEE", "CHRYSANTHEME", "BAMBOU", "PRINTEMPS", "ETE",
+            "AUTOMNE", "HIVER" };
     private String dessin;
 
-    public TuileBonus(String cat, String des) {
-        String catUC = cat.toUpperCase();
-        String desUC = des.toUpperCase();
-        if (!estDansCategorie(catUC, categoriesValides)) {
+    public TuileBonus(String categorie, String dessin) {
+        if (!estDansListe(categorie, categoriesValides)) {
             throw new IllegalArgumentException("La catégorie n'est pas valide");
         }
 
-        if (!estDansDessin(desUC, dessinsValides)) {
+        if (!estDansListe(dessin, dessinsValides)) {
             throw new IllegalArgumentException("Le dessin n'est pas valide");
         }
-        this.categorie = catUC;
-        this.dessin = desUC;
-        this.image = new ImageIcon("images/" + categorie + "_" + dessin + ".png");
+        this.categorie = categorie;
+        this.dessin = dessin;
+        this.image = new ImageIcon("../images/" + categorie + "_" + dessin + ".png");
     }
 
     // Getter
     public String getDessin() {
         return dessin;
+    }
+
+    public static String[] getCategoriesValides() {
+        return categoriesValides;
+    }
+
+    public static String[] getDessinsValides() {
+        return dessinsValides;
     }
 
     @Override
@@ -36,6 +45,7 @@ public class TuileBonus extends Tuile {
 
     @Override
     public String toString() {
-        return categorie + "_" + dessin;
+        return String.valueOf(categorie.charAt(0)) + String.valueOf(dessin.charAt(0)); 
+
     }
 }
