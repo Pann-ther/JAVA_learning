@@ -44,7 +44,6 @@ public class CourseCycliste {
         }
     }
 
-    // Gere l'enregistrement des resultats des coureurs
     private static void gestionEvenement(String[][] listeCoureurs, String[][] listeArrivee, String[][] listeAbandons, String[][] listeDisqualification) {
         int numeroDossard = -1;
         boolean plusDeCoureurs = false;
@@ -108,26 +107,51 @@ public class CourseCycliste {
 
     private static void enregistrerDisqualification(int numeroDossard, String[][] listeCoureurs, String[][] listeDisqualification, String[][] listeArrivee) {
         int indexCoureur = numeroDossard -1;
-        if (listeCoureurs[indexCoureur][2] == null || listeCoureurs[indexCoureur][2].equals("Arrivée")) {
-            for(int i =0; i< listeCoureurs.length ; i++){
-                if(listeDisqualification[i][0] == null && listeDisqualification[i][1] == null){
-                    listeDisqualification[i][0] = listeCoureurs[indexCoureur][0];
-                    listeDisqualification[i][1] = listeCoureurs[indexCoureur][1];
-                    if (listeCoureurs[indexCoureur][2].equals("Arrivée")) {
-                        listeCoureurs[indexCoureur][2] = "Disqualifié";
-                        for(int j=0; j<listeArrivee.length; j++){
-                            if (listeArrivee[j][0].equals(listeCoureurs[indexCoureur][0])) {
-                                listeArrivee[j][0] = null;
-                                listeArrivee[j][1] = null;
-                                return;
-                            }
-                        }
-                    }
-                    return;  
-                }
-            }
+        if (listeCoureurs[indexCoureur][2] == null ) {
+            enregistrerDansDisqualification(listeCoureurs, listeDisqualification, indexCoureur);
+            return;  
+        } else if (listeCoureurs[indexCoureur][2].equals("Arrivée")) {
+            enregistrerDansDisqualification(listeCoureurs, listeDisqualification, indexCoureur);
+            retirerDeClassement(listeCoureurs,listeArrivee, indexCoureur);
         } else {
             System.out.println("Ce coureur a déja été enregistré: "+listeCoureurs[indexCoureur][2]);
+        }
+    }
+
+    // Enregistre un coureur dans la liste des disqualifiés
+    private static void enregistrerDansDisqualification(String[][] listeCoureurs, String[][] listeDisqualification, int indexCoureur) {
+        for (int i = 0; i < listeCoureurs.length; i++) {
+            if (listeDisqualification[i][0] == null && listeDisqualification[i][1] == null) {
+                listeDisqualification[i][0] = listeCoureurs[indexCoureur][0];
+                listeDisqualification[i][1] = listeCoureurs[indexCoureur][1];
+                listeCoureurs[indexCoureur][2] = "Disqualifié";
+                return;
+            }
+        }
+    }
+
+    private static void reorganisationClassement(String[][] listeArrivee, int indiceCoureurSupprime){
+        for(int i=indiceCoureurSupprime; i<listeArrivee.length; i++){
+            if(listeArrivee[i+1][0] != null){
+                listeArrivee[i][0] = listeArrivee[i+1][0];
+                listeArrivee[i][1] = listeArrivee[i+1][1];
+            } else {
+                listeArrivee[i][0] = null;
+                listeArrivee[i][1]= null;
+                return;
+            }
+        }
+    }
+
+    // Retire un coureur de la liste d'arrivée et réorganise le classement
+    private static void retirerDeClassement(String[][] listeCoureurs, String[][] listeArrivee, int indexCoureur) {
+        for (int j = 0; j < listeArrivee.length; j++) {
+            if (listeArrivee[j][0].equals(listeCoureurs[indexCoureur][0])) {
+                listeArrivee[j][0] = null;
+                listeArrivee[j][1] = null;
+                reorganisationClassement(listeArrivee, j);
+                return;
+            }
         }
     }
 
@@ -197,6 +221,7 @@ public class CourseCycliste {
         }
     }
 
+    
 
     private static int calculerNbCoureurs(String[][] listeCoureurs){
         int nbCoureurs = 0;
@@ -236,9 +261,12 @@ public class CourseCycliste {
                 entree = lecture.nextInt();
                 if (entree >= minimum && entree <= maximum) {
                     estCorrect = true;
+                } else {
+                    System.out.println("Erreur: faites un choix valide en saissisant un des nombres proposé");
+                lecture.nextLine();
                 }
             } catch (Exception e) {
-                System.out.println("Erreur: faites un choix valide en saissisant un des nombre proposé");
+                System.out.println("Erreur: faites un choix valide en saissisant un des nombres proposé");
                 lecture.nextLine();
             }
         } while (!estCorrect);
