@@ -20,7 +20,7 @@ public class LectureEntrée {
 
         return input;
     }
-
+ 
     public static String lireString(String msg){
         String input = "";
         boolean correct = false;

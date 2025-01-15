@@ -1,10 +1,15 @@
 import java.util.ArrayList;
 
+import javax.swing.ImageIcon;
+
+import mahjong.gui.IGMahjong;
+
 public class Plateau {
     private int lignes;
     private int colonnes;
     private ArrayList<Tuile>[][] plateau;
     private int nbTuilesRestantes;
+    IGMahjong plateauGraphique;
 
     @SuppressWarnings("unchecked")
     public Plateau(int lignes, int colonnes, int[][] disposition, JeuMahjongg ensembleTuiles) throws Exception {
@@ -12,6 +17,7 @@ public class Plateau {
         this.colonnes = colonnes;
 
         plateau = new ArrayList[lignes][colonnes]; // initialisation du tableau
+        plateauGraphique = new IGMahjong(true);
 
         // Initialise chaque cases avec un ArrayList pour representer les piles de
         // tuiles
@@ -20,11 +26,11 @@ public class Plateau {
                 plateau[l][c] = new ArrayList<>();
             }
         }
-        initialiserPlateau(disposition, ensembleTuiles); // Initialise le tableau en placant les tuiles aleatoirement
+        initialiserPlateau(disposition, ensembleTuiles, plateauGraphique); // Initialise le tableau en placant les tuiles aleatoirement
                                                          // choisis au coordonnées indiqués
     }
 
-    public void initialiserPlateau(int[][] disposition, JeuMahjongg ensembleTuiles) throws Exception {
+    public void initialiserPlateau(int[][] disposition, JeuMahjongg ensembleTuiles, IGMahjong plateauGraphique) throws Exception {
         if (ensembleTuiles.size() != disposition.length) {
             throw new Exception(
                     "Le nombre de coordonées ne corresponds pas au nombre de tuiles: " + ensembleTuiles.size());
@@ -36,9 +42,11 @@ public class Plateau {
             Tuile tuiletiree = ensembleTuiles.tirerTuile();
             int ligne = disposition[i][0];
             int colonne = disposition[i][1];
+            int pile = disposition[i][2];
             if (ligne >= 0 && ligne < lignes && colonne >= 0 && colonne < colonnes) {
                 plateau[ligne][colonne].add(tuiletiree);
                 tuiletiree.setCoordonnees(disposition[i]);
+                plateauGraphique.ajouterTuile(tuiletiree.getImage(), ligne, colonne, pile);
             } else {
                 throw new Exception("Les coordonées de la tuile sont hors de l'espace de jeu");
             }
@@ -54,8 +62,10 @@ public class Plateau {
 
         if (t1.retirerAvec(t2)) {
             if (estSelectionnable(t1) && estSelectionnable(t2)) {
+                
                 // Retirer les tuiles du plateau
                 plateau[coordT1[0]][coordT1[1]].remove(t1);
+                plateauGraphique.retirerPaire(coordT1[0],coordT1[1],plateau[coordT1[0]][coordT1[1]].size() - 1,coordT2[0],coordT2[1],plateau[coordT2[0]][coordT2[1]].size() - 1);
                 plateau[coordT2[0]][coordT2[1]].remove(t2);
                 nbTuilesRestantes -= 2;
                 return true;
