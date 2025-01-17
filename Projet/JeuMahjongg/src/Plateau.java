@@ -1,15 +1,16 @@
 import java.util.ArrayList;
-
 import javax.swing.ImageIcon;
-
 import mahjong.gui.IGMahjong;
+import mahjong.gui.MahjongControler;
 
 public class Plateau {
     private int lignes;
     private int colonnes;
     private ArrayList<Tuile>[][] plateau;
     private int nbTuilesRestantes;
-    IGMahjong plateauGraphique;
+    private IGMahjong plateauGraphique;
+    private MahjongControler controler;
+    private boolean partieEstPerdu = false;
 
     @SuppressWarnings("unchecked")
     public Plateau(int lignes, int colonnes, int[][] disposition, JeuMahjongg ensembleTuiles) throws Exception {
@@ -18,6 +19,8 @@ public class Plateau {
 
         plateau = new ArrayList[lignes][colonnes]; // initialisation du tableau
         plateauGraphique = new IGMahjong(true);
+        controler = new PseudoControler(plateauGraphique);
+        plateauGraphique.setControler(controler);
 
         // Initialise chaque cases avec un ArrayList pour representer les piles de
         // tuiles
@@ -42,11 +45,10 @@ public class Plateau {
             Tuile tuiletiree = ensembleTuiles.tirerTuile();
             int ligne = disposition[i][0];
             int colonne = disposition[i][1];
-            int pile = disposition[i][2];
             if (ligne >= 0 && ligne < lignes && colonne >= 0 && colonne < colonnes) {
                 plateau[ligne][colonne].add(tuiletiree);
                 tuiletiree.setCoordonnees(disposition[i]);
-                plateauGraphique.ajouterTuile(tuiletiree.getImage(), ligne, colonne, pile);
+                plateauGraphique.ajouterTuile(tuiletiree.getImage(), tuiletiree.getX(),tuiletiree.getY(),tuiletiree.getZ());
             } else {
                 throw new Exception("Les coordonées de la tuile sont hors de l'espace de jeu");
             }
@@ -55,7 +57,12 @@ public class Plateau {
 
     // Retire les tuiles du plateau de jeu uniquement si 2 tuiles ont le meme dessin
     // et sont d'instances différentes
+    
     public boolean tirerTuiles(int[] coordT1, int[] coordT2) {
+        // Verifie si les cases sont vides et permets au joueur de continuer à jouer
+        if (plateau[coordT1[0]][coordT1[1]].isEmpty() || plateau[coordT2[0]][coordT2[1]].isEmpty()) {
+            return false;
+        }
         // Récupération des tuiles sélectionnées à partir du plateau de jeu
         Tuile t1 = plateau[coordT1[0]][coordT1[1]].get(plateau[coordT1[0]][coordT1[1]].size() - 1);
         Tuile t2 = plateau[coordT2[0]][coordT2[1]].get(plateau[coordT2[0]][coordT2[1]].size() - 1);
@@ -64,9 +71,9 @@ public class Plateau {
             if (estSelectionnable(t1) && estSelectionnable(t2)) {
                 
                 // Retirer les tuiles du plateau
-                plateau[coordT1[0]][coordT1[1]].remove(t1);
-                plateauGraphique.retirerPaire(coordT1[0],coordT1[1],plateau[coordT1[0]][coordT1[1]].size() - 1,coordT2[0],coordT2[1],plateau[coordT2[0]][coordT2[1]].size() - 1);
-                plateau[coordT2[0]][coordT2[1]].remove(t2);
+                plateau[t1.getX()][t1.getY()].remove(t1);
+                plateauGraphique.retirerPaire(t1.getX(),t1.getY(),t1.getZ(),t2.getX(),t2.getY(),t2.getZ());
+                plateau[t2.getX()][t2.getY()].remove(t2);
                 nbTuilesRestantes -= 2;
                 return true;
             }
@@ -100,6 +107,30 @@ public class Plateau {
         return true; // La tuile est sélectionnable
     }
 
+    public boolean resteCombinaisonsPossibles(){
+        for(int i = 0; i<lignes; i++){
+            for(int j =0; j<colonnes; j++){
+                if(!plateau[i][j].isEmpty()){
+                    Tuile t1 = plateau[i][j].get(plateau[i][j].size()-1); // Recupere la tuile au sommet de la pile
+                    if (estSelectionnable(t1)) {
+                        for(int k=0; k<lignes; k++){
+                            for(int l=0; l<colonnes; l++){
+                                if(!plateau[k][l].isEmpty()){
+                                    Tuile t2 = plateau[k][l].get(plateau[k][l].size()-1);
+                                    if (estSelectionnable(t2) && t1.retirerAvec(t2)) {
+                                        return true;
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        partieEstPerdu = true;
+        return false;
+    }
+
     // Verifie combien y'a t'ils de tuiles restantes en dans le plateau
     public int tuilesRestantes() {
         return nbTuilesRestantes;
@@ -111,6 +142,10 @@ public class Plateau {
             return true;
         }
         return false;
+    }
+
+    public boolean getPartieEstPerdu(){
+        return partieEstPerdu;
     }
 
     // Affiche les tuiles avec leur emplacement sur le plateau pour debugger

@@ -34,14 +34,16 @@ public class Main {
         if (t1.retirerAvec(t2)) {
             System.out.println("Test échoué : La methode permet d'enlever 2 tuiles identiques d'une même instance");
         } else {
-            System.out.println("Test réussi : La methode ne permet pas d'enlever 2 tuiles identiques d'une même instance");
+            System.out.println(
+                    "Test réussi : La methode ne permet pas d'enlever 2 tuiles identiques d'une même instance");
         }
         // Tentative de retrait de 2 tuiles identiques d'instances differentes
         Tuile t3 = new TuileHonneur("DRAGON", "VERT");
         if (t1.retirerAvec(t3)) {
             System.out.println("Test réussi : La methode permet d'enlever 2 tuiles identiques d'instances differentes");
         } else {
-            System.out.println("Test échoué : La methode ne permet pas d'enlever 2 tuiles identiques d'instances differentes");
+            System.out.println(
+                    "Test échoué : La methode ne permet pas d'enlever 2 tuiles identiques d'instances differentes");
         }
         // Tentative de retrait de 2 tuiles differentes
         Tuile t4 = new TuileBonus("FLEUR", "BAMBOU");
@@ -52,7 +54,7 @@ public class Main {
         }
 
         // Afficher l'image d'une tuile
-        System.out.println("Affichage chemin de l'image: "+t1.getImage());
+        System.out.println("Affichage chemin de l'image: " + t1.getImage());
         System.out.println();
         System.out.println();
 
@@ -87,20 +89,30 @@ public class Main {
             Plateau plateau = new Plateau(7, 13, disp, ensembleTuiles); // initialisation du plateau de jeu
 
             int nbTour = 0;
-            System.out.println("Le but du jeu est de selectonner par paire les tuiles identiques afin de les retirer du plateau");
-            System.out.println("La partie sera terminer lorsque le plateau sera vide");
+            System.out.println(
+                    "Le but du jeu est de selectonner par paire les tuiles identiques afin de les retirer du plateau");
+            System.out.println("La partie sera terminer lorsque le plateau sera vide ou que plus aucunes combinaisons ne soit possible");
             System.out.println();
             do {
-                System.out.print("Tuiles restantes: "+plateau.tuilesRestantes()+" Tour de jeu: "+ nbTour+ "\n"); // Compteur tuiles restantes et tour de jeu
+                System.out.print("Tuiles restantes: " + plateau.tuilesRestantes() + " Tour de jeu: " + nbTour + "\n"); // Compteur tuiles restantes et tour de jeu                                                                                                 
                 System.out.println();
                 System.out.println(plateau.toString());
                 int[] coordT1 = LectureEntrée.coordTuile("première");
                 int[] coordT2 = LectureEntrée.coordTuile("deuxième");
-                System.out.println(plateau.tirerTuiles(coordT1,coordT2));
+                if (plateau.tirerTuiles(coordT1, coordT2)) {
+                    System.out.println("La paire de tuiles est valide: elle a été retirée du plateau");
+                } else {
+                    System.out.println("La paire de tuiles n'est pas valide: elle n'a pas été retirée du plateau");
+                }
+                if (!plateau.resteCombinaisonsPossibles()) {
+                    System.out.println("Vous avez perdu la partie: il ne reste plus de coup à jouer");
+                    System.out.println(plateau.toString());
+                } else if (plateau.estVide()) {
+                    System.out.println("Vous avez gagné la partie: il n'y a plus de tuiles sur le plateau");
+                }
                 System.out.println();
                 nbTour++;
-            } while (!plateau.estVide());
-            System.out.println("Vous avez gagné la partie");
+            } while (!plateau.estVide() && !plateau.getPartieEstPerdu());
         } catch (Exception e) {
             System.out.println(e.getMessage());
         }
