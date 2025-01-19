@@ -109,9 +109,9 @@ public class Damier {
     }
 
     public static void main(String[] args) throws InterruptedException {
-        char[][] damier = initDamier(11, 11); // Initialisation d'un damier de 10x10
+        char[][] damier = initDamier(11, 11); // Initialisation d'un damier de 11x11
         boolean resteDesNoisettes = true;
-        // Affichage du damier (optionnel, juste pour vérifier)
+        // Affichage du damier 
         afficherDamier(damier);
         while (resteDesNoisettes) {
             Thread.sleep(10);
