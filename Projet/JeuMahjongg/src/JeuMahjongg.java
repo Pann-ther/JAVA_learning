@@ -14,14 +14,8 @@ public class JeuMahjongg {
 
     //initialise les 144 tuiles
     public void initialiserTuiles(){
-        String[] numeriques = {"CERCLE", "BAMBOU", "CARACTERE"};
-        String[] vents = {"SUD","NORD","OUEST","EST"};
-        String[] dragons = {"VERT","ROUGE","BLANC"};
-        String[] fleurs = {"PRUNIER", "ORCHIDEE", "CHRYSANTHEME", "BAMBOU"};
-        String[] saisons = {"PRINTEMPS", "ETE", "AUTOMNE", "HIVER"};
-
         // Tuiles numériques
-        for(String numerique : numeriques){
+        for(String numerique : TuileNumerique.getCategoriesValides()){
             for(int i=1; i<=9; i++){
                 for(int j=0; j<4; j++){
                     tuiles.add(new TuileNumerique(numerique, i));
@@ -30,28 +24,27 @@ public class JeuMahjongg {
         }
 
         // Tuiles Honneurs
-        // Tuiles vents
-        for(String vent : vents){
-            for(int i=0; i<4; i++){
-                tuiles.add(new TuileHonneur("VENT", vent));
-            }
-        }
-        // Tuiles dragons
-        for(String dragon:dragons){
-            for(int i=0; i<4; i++){
-                tuiles.add(new TuileHonneur("DRAGON", dragon));
+        for(String dessin : TuileHonneur.getDessinsValides()){
+            if (dessin.equals("EST") || dessin.equals("OUEST") || dessin.equals("NORD") || dessin.equals("SUD")) {
+               for(int i=0; i<4; i++){
+                    tuiles.add(new TuileHonneur("VENT", dessin));
+                } 
+            } else {
+                for(int i=0; i<4; i++){
+                    tuiles.add(new TuileHonneur("DRAGON", dessin));
+                }
             }
         }
 
         // Tuiles Bonus
-        // Tuiles fleurs
-        for(String fleur:fleurs){
-            tuiles.add(new TuileBonus("FLEUR", fleur));
+        for(String dessin:TuileBonus.getDessinsValides()){
+            if(dessin.equals("PRUNIER") || dessin.equals("ORCHIDEE") || dessin.equals("CHRYSANTHEME") || dessin.equals("BAMBOU")){
+                tuiles.add(new TuileBonus("FLEUR", dessin));
+            } else {
+                tuiles.add(new TuileBonus("SAISON", dessin));
+            }
         }
-        // Tuiles saisons
-        for(String saison:saisons){
-            tuiles.add(new TuileBonus("SAISON", saison));
-        }
+        
     }
 
     // Permet de tirer une tuile aleatoirement et de la retirer de l'ensemble

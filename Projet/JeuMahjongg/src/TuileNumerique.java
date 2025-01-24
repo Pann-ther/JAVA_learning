@@ -14,7 +14,7 @@ public class TuileNumerique extends Tuile {
         }
         this.categorie = categorie;
         this.numero = numero;
-        this.image = new ImageIcon("../images/" + categorie + "_" + numero + ".png");
+        this.image = new ImageIcon("images/"+ categorie + "_" + numero + ".png");
     }
 
     // Getters

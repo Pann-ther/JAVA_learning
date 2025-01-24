@@ -16,7 +16,7 @@ public class TuileBonus extends Tuile {
         }
         this.categorie = categorie;
         this.dessin = dessin;
-        this.image = new ImageIcon("../images/" + categorie + "_" + dessin + ".png");
+        this.image = new ImageIcon("images/"+ categorie + "_" + dessin + ".png");
     }
 
     // Getter

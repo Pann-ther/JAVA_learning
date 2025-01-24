@@ -1,7 +1,6 @@
 import java.util.ArrayList;
 import javax.swing.ImageIcon;
 import mahjong.gui.IGMahjong;
-import mahjong.gui.MahjongControler;
 
 public class Plateau {
     private int lignes;
@@ -9,7 +8,6 @@ public class Plateau {
     private ArrayList<Tuile>[][] plateau;
     private int nbTuilesRestantes;
     private IGMahjong plateauGraphique;
-    private MahjongControler controler;
     private boolean partieEstPerdu = false;
 
     @SuppressWarnings("unchecked")
@@ -19,8 +17,6 @@ public class Plateau {
 
         plateau = new ArrayList[lignes][colonnes]; // initialisation du tableau
         plateauGraphique = new IGMahjong(true);
-        controler = new PseudoControler(plateauGraphique);
-        plateauGraphique.setControler(controler);
 
         // Initialise chaque cases avec un ArrayList pour representer les piles de
         // tuiles
@@ -58,10 +54,12 @@ public class Plateau {
     // Retire les tuiles du plateau de jeu uniquement si 2 tuiles ont le meme dessin
     // et sont d'instances différentes
     
-    public boolean tirerTuiles(int[] coordT1, int[] coordT2) {
+    public ResultatTirageTuiles tirerTuiles(int[] coordT1, int[] coordT2) {
+        ResultatTirageTuiles resultatTirage = new ResultatTirageTuiles(); // Cette objet va permettre de donner le resultat du tirage de tuiles
         // Verifie si les cases sont vides et permets au joueur de continuer à jouer
         if (plateau[coordT1[0]][coordT1[1]].isEmpty() || plateau[coordT2[0]][coordT2[1]].isEmpty()) {
-            return false;
+            resultatTirage.setResultat(ResultatTirageTuiles.Resultat.VIDE);
+            return resultatTirage;
         }
         // Récupération des tuiles sélectionnées à partir du plateau de jeu
         Tuile t1 = plateau[coordT1[0]][coordT1[1]].get(plateau[coordT1[0]][coordT1[1]].size() - 1);
@@ -75,12 +73,16 @@ public class Plateau {
                 plateauGraphique.retirerPaire(t1.getX(),t1.getY(),t1.getZ(),t2.getX(),t2.getY(),t2.getZ());
                 plateau[t2.getX()][t2.getY()].remove(t2);
                 nbTuilesRestantes -= 2;
-                return true;
+                resultatTirage.setResultat(ResultatTirageTuiles.Resultat.VALIDE);
+                return resultatTirage;
             }
+            resultatTirage.setResultat(ResultatTirageTuiles.Resultat.PAS_JOUABLE);
+            return resultatTirage;
         }
-        return false;
+        resultatTirage.setResultat(ResultatTirageTuiles.Resultat.PAS_RETIRABLE);
+        return resultatTirage;
     }
-
+    
     // Verifie si les tuiles choisi peuvent etre joué et retirer du plateau
     public boolean estSelectionnable(Tuile t) {
         if (t == null) {
@@ -148,6 +150,14 @@ public class Plateau {
         return partieEstPerdu;
     }
 
+    // Renvoi la tuile selectionné 
+    public Tuile getTuile(int[] coord){
+        if (plateau[coord[0]][coord[1]].isEmpty()) {
+            return null;
+        }
+        return plateau[coord[0]][coord[1]].get(plateau[coord[0]][coord[1]].size() -1);
+    }
+
     // Affiche les tuiles avec leur emplacement sur le plateau pour debugger
     public String debug() {
         StringBuilder ret = new StringBuilder();
@@ -202,13 +212,25 @@ public class Plateau {
                     for (int k = plateau[i][j].size() - 1; k >= 0; k--) {
                         Tuile tuileActuelle = plateau[i][j].get(k);
                         if ((j == 0) || (j == 6) || (j == 12)) {
+                            if (estSelectionnable(tuileActuelle)) {
                             ret.append("<").append(tuileActuelle).append(">");
                             break;
+                            }
+                            ret.append(" ").append(tuileActuelle).append(" ");
+                            break;
                         } else if ((j > 0 && j < 5) || (j == 7)) {
-                            ret.append(tuileActuelle).append(">");
+                            if (estSelectionnable(tuileActuelle)) {
+                                ret.append(tuileActuelle).append(">");
+                                break;
+                            }
+                            ret.append(tuileActuelle).append(" ");
                             break;
                         } else if ((j == 5) || (j > 7 && j < 12)) {
-                            ret.append("<").append(tuileActuelle);
+                            if (estSelectionnable(tuileActuelle)) {
+                                ret.append("<").append(tuileActuelle);
+                                break;
+                            }
+                            ret.append(" ").append(tuileActuelle);
                             break;
                         }
                     }
