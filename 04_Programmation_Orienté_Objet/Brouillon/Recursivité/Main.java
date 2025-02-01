@@ -10,18 +10,23 @@ public class Main {
         System.out.println(rang.nbSuperieur(rang.getSuperieur()));
 
         ////
-        Arret a1 = new Arret("Marne la vallée",new Heure(14,56),null);
-        Arret a2 = new Arret("Val d'europe",new Heure(14,53),a1);
-        Arret a3 = new Arret("Bussy-Saint-Georges",new Heure(14,49),a2);
-        Arret a4 = new Arret("Torcy",new Heure(14,45),a3);
-        Train t1 = new Train(4567, a4);
-        System.out.println(a1.toString());
+       
+
+        Train t1 = new Train(4567, null);
+        // Ajout des gares desservies par le train
+        t1.ajouterArretFin("Torcy",new Heure(14,40));
+        t1.ajouterArretFin("Bussy",new Heure(14,50));
+        t1.ajouterArretFin("Val",new Heure(14,55));
+        t1.ajouterArretFin("Disney",new Heure(14,59));
+        // Modification de la desserte et retard
+        System.out.println("Plan de route initial");
         t1.afficher();
-        System.out.println("Il reste "+t1.nbArret()+" arrets");
+        t1.supprimerArret("torcy"); 
+        t1.enregistrerRetard(10);
+        System.out.println("Plan de route final");
+        t1.afficher();
+        System.out.println("Le terminus est dans "+t1.nbArret()+" arrets ");
         System.out.println(t1.heurePassage("Torcy"));
-        Heure h1 = new Heure(14,30);
-        h1.ajouterRetard(175);
-        System.out.println(h1.toString());
         t1.enregistrerRetard(10);
     }
 }
