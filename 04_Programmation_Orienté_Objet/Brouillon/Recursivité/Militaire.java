@@ -23,7 +23,6 @@ public class Militaire {
         if (m == null) {
             return 0;
         }
-
         return 1+nbSuperieur(m.getSuperieur());
     }
 
