@@ -40,7 +40,10 @@ public class Main{
 
 
         CompteBancaire compte1 = new CompteBancaire("Kylian Chebbah");
-        System.out.println("Numero de compte: "+compte1.getNumeroCompte());
+        CompteBancaire compte2 = new CompteBancaire("Marcel Page");
+        CompteBancaire compte3 = new CompteBancaire("Hame Sacko");
+        System.out.println(compte1.toString());
+        System.out.println(compte3.toString());
         compte1.deposer(1000);
         compte1.retirer(1500);
         System.out.println(compte1.afficherSolde());
