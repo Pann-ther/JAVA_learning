@@ -41,5 +41,9 @@ public class CompteBancaire {
         return "Votre solde est de "+solde+"€";
     }
 
+    public String toString(){
+        return "Titulaire du compte: "+titulaire+", Numero de compte: "+numeroCompte;
+    }
+
 
 }
